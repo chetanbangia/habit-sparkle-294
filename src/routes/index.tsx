@@ -75,14 +75,14 @@ function HomePage() {
                   />
                   <defs>
                     <linearGradient id="scribbleGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#a855f7" />
-                      <stop offset="100%" stopColor="#ec4899" />
+                      <stop offset="0%" stopColor="oklch(0.54 0.13 12)" />
+                      <stop offset="100%" stopColor="oklch(0.74 0.10 70)" />
                     </linearGradient>
                   </defs>
                 </svg>
               </span>{" "}
               <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary via-primary to-gold bg-clip-text text-transparent">
                 Dating apps
               </span>
             </motion.h1>
