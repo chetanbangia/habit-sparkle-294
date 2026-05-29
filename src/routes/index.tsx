@@ -125,7 +125,7 @@ function HomePage() {
               initial={{ opacity: 0, x: 60, rotate: 0 }}
               animate={{ opacity: 1, x: 0, rotate: 12 }}
               transition={{ delay: 0.6, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute right-2 sm:right-6 top-8 w-48 sm:w-56 lg:w-64 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_rgba(168,85,247,0.4)] animate-float-medium"
+              className="absolute right-2 sm:right-6 top-8 w-48 sm:w-56 lg:w-64 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_color-mix(in_oklab,var(--color-primary)_45%,transparent)] animate-float-medium"
               style={{ transformOrigin: "center" }}
             >
               <img src={profile3} alt="Profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
