@@ -109,7 +109,7 @@ function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 perspective-1000">
             <Step
               n="01"
               icon={UserPlus}
