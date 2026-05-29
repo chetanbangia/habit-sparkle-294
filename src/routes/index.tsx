@@ -31,10 +31,10 @@ function HomePage() {
       <Header />
 
       {/* HERO — modern dating-app style, light, split layout */}
-      <section className="font-sf relative w-full overflow-hidden bg-gradient-to-b from-[#fdf7fb] via-white to-[#fbf4fb] px-5 sm:px-10 lg:px-16 pt-16 pb-24 lg:pt-24 lg:pb-32">
+      <section className="font-sf relative w-full overflow-hidden bg-gradient-to-b from-background via-background to-surface-alt px-5 sm:px-10 lg:px-16 pt-16 pb-24 lg:pt-24 lg:pb-32">
         {/* Soft gradient blobs */}
-        <div className="pointer-events-none absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-purple-300/40 to-pink-300/30 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-40 -right-32 w-[32rem] h-[32rem] rounded-full bg-gradient-to-tr from-pink-300/40 to-purple-300/20 blur-3xl" />
+        <div className="pointer-events-none absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-primary/25 to-gold/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-40 -right-32 w-[32rem] h-[32rem] rounded-full bg-gradient-to-tr from-secondary/50 to-primary/20 blur-3xl" />
 
         <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-10 items-center">
           {/* LEFT — copy */}
@@ -43,7 +43,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.6 }}
-              className="text-sm font-semibold tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500"
+              className="text-sm font-semibold tracking-[0.2em] uppercase text-primary"
             >
               Find your love
             </motion.p>
@@ -52,7 +52,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] leading-[1.02] text-neutral-900"
+              className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] leading-[1.02] text-foreground"
             >
               <span className="relative inline-block">
                 <span>Delete all</span>
@@ -75,14 +75,14 @@ function HomePage() {
                   />
                   <defs>
                     <linearGradient id="scribbleGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#a855f7" />
-                      <stop offset="100%" stopColor="#ec4899" />
+                      <stop offset="0%" stopColor="oklch(0.54 0.13 12)" />
+                      <stop offset="100%" stopColor="oklch(0.74 0.10 70)" />
                     </linearGradient>
                   </defs>
                 </svg>
               </span>{" "}
               <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary via-primary to-gold bg-clip-text text-transparent">
                 Dating apps
               </span>
             </motion.h1>
@@ -91,7 +91,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="mt-7 max-w-md text-base sm:text-lg text-neutral-500 leading-relaxed"
+              className="mt-7 max-w-md text-base sm:text-lg text-muted-foreground leading-relaxed"
             >
               Saanjh is where meaningful connections happen — quietly, verified, and built around your family. No swipes. No noise. Just real partners.
             </motion.p>
@@ -104,14 +104,14 @@ function HomePage() {
             >
               <Link
                 to="/signup"
-                className="group relative inline-flex items-center gap-2 px-7 py-4 rounded-full text-white text-sm font-semibold tracking-tight bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 shadow-[0_15px_40px_-10px_rgba(168,85,247,0.6)] hover:shadow-[0_20px_50px_-8px_rgba(236,72,153,0.7)] hover:-translate-y-0.5 transition-all duration-300 animate-pulse-glow"
+                className="group relative inline-flex items-center gap-2 px-7 py-4 rounded-full text-primary-foreground text-sm font-semibold tracking-tight bg-primary hover:bg-primary/90 shadow-[0_15px_40px_-10px_color-mix(in_oklab,var(--color-primary)_55%,transparent)] hover:shadow-[0_20px_50px_-8px_color-mix(in_oklab,var(--color-primary)_65%,transparent)] hover:-translate-y-0.5 transition-all duration-300 animate-pulse-glow"
               >
                 <span>Find your match</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
               </Link>
               <Link
                 to="/pricing"
-                className="text-sm font-semibold text-neutral-700 hover:text-purple-600 transition story-link"
+                className="text-sm font-semibold text-foreground/80 hover:text-primary transition story-link"
               >
                 How it works
               </Link>
@@ -125,7 +125,7 @@ function HomePage() {
               initial={{ opacity: 0, x: 60, rotate: 0 }}
               animate={{ opacity: 1, x: 0, rotate: 12 }}
               transition={{ delay: 0.6, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute right-2 sm:right-6 top-8 w-48 sm:w-56 lg:w-64 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_rgba(168,85,247,0.4)] animate-float-medium"
+              className="absolute right-2 sm:right-6 top-8 w-48 sm:w-56 lg:w-64 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_color-mix(in_oklab,var(--color-primary)_45%,transparent)] animate-float-medium"
               style={{ transformOrigin: "center" }}
             >
               <img src={profile3} alt="Profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
@@ -141,7 +141,7 @@ function HomePage() {
               initial={{ opacity: 0, x: -60, rotate: 0 }}
               animate={{ opacity: 1, x: 0, rotate: -10 }}
               transition={{ delay: 0.5, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute left-2 sm:left-6 top-12 w-44 sm:w-52 lg:w-60 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_rgba(236,72,153,0.4)] animate-float-slow"
+              className="absolute left-2 sm:left-6 top-12 w-44 sm:w-52 lg:w-60 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_color-mix(in_oklab,var(--color-gold)_45%,transparent)] animate-float-slow"
             >
               <img src={profile2} alt="Profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
@@ -156,13 +156,13 @@ function HomePage() {
               initial={{ opacity: 0, y: 40, scale: 0.92 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.7, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-56 sm:w-64 lg:w-72 aspect-[3/4] rounded-[2.2rem] p-[3px] bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 shadow-[0_30px_80px_-20px_rgba(168,85,247,0.55)] animate-float-tilt"
+              className="relative z-10 w-56 sm:w-64 lg:w-72 aspect-[3/4] rounded-[2.2rem] p-[3px] bg-gradient-to-br from-primary via-primary to-gold shadow-[0_30px_80px_-20px_color-mix(in_oklab,var(--color-primary)_55%,transparent)] animate-float-tilt"
             >
-              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-white">
+              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-card">
                 <img src={profile1} alt="Featured profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
                 {/* Glass overlay chip */}
                 <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/30 border border-white/50">
-                  <Heart className="w-3 h-3 text-pink-500 fill-pink-500" />
+                  <Heart className="w-3 h-3 text-primary fill-primary" />
                   <span className="text-[10px] font-semibold text-white tracking-tight">Find your love</span>
                 </div>
                 {/* Bottom glass card */}
@@ -182,15 +182,15 @@ function HomePage() {
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.1, duration: 0.6, type: "spring" }}
-              className="absolute -top-2 left-8 w-12 h-12 rounded-2xl bg-white shadow-xl grid place-items-center animate-float-slow"
+              className="absolute -top-2 left-8 w-12 h-12 rounded-2xl bg-card shadow-xl grid place-items-center animate-float-slow"
             >
-              <Heart className="w-5 h-5 text-pink-500 fill-pink-500" />
+              <Heart className="w-5 h-5 text-primary fill-primary" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.25, duration: 0.6, type: "spring" }}
-              className="absolute bottom-6 -left-2 w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-xl grid place-items-center text-white animate-float-medium"
+              className="absolute bottom-6 -left-2 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-gold shadow-xl grid place-items-center text-primary-foreground animate-float-medium"
             >
               <Sparkles className="w-6 h-6" />
             </motion.div>
