@@ -28,6 +28,11 @@ export const Route = createRootRoute({
         name: "twitter:description",
         content: "A modern matrimonial home for the Punjabi and Indian community.",
       },
+      { name: "description", content: "Bringing two souls together." },
+      { property: "og:description", content: "Bringing two souls together." },
+      { name: "twitter:description", content: "Bringing two souls together." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5a304e4c-8de0-4fb8-a616-48cae924b9e9" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5a304e4c-8de0-4fb8-a616-48cae924b9e9" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
