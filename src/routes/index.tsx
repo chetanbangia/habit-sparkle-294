@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Heart, Shield, Users, Sparkles, ArrowRight, Check } from "lucide-react";
+import { Heart, Shield, Users, Sparkles, ArrowRight, Check, UserPlus, Search, MessageCircleHeart, Crown, Star, Zap, Gem } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import heroImage from "@/assets/hero-wedding.jpg";
@@ -87,32 +87,40 @@ function HomePage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="bg-surface-alt py-24">
+      <section className="font-sf bg-gradient-to-b from-background to-surface-alt py-24">
         <div className="max-w-6xl mx-auto px-5 sm:px-8">
           <div className="text-center mb-16">
-            <p className="divider-ornament max-w-xs mx-auto text-xs uppercase tracking-[0.3em]">
-              How Saanjh Works
-            </p>
-            <h2 className="font-serif text-4xl sm:text-5xl mt-6 leading-tight">
-              Three quiet steps to <em className="text-primary not-italic">forever</em>.
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-5">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="text-xs font-semibold tracking-tight uppercase">How Saanjh Works</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.04em] leading-[1.05]">
+              Three quiet steps to <span className="text-primary">forever</span>.
             </h2>
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto tracking-tight">
+              From profile to proposal — guided, private, and built around your family.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             <Step
               n="01"
+              icon={UserPlus}
               title="Create your profile"
               gurmukhi="ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ"
               body="Tell us about you — your background, your values, what you're looking for. Free to start, always."
             />
             <Step
               n="02"
+              icon={Search}
               title="Discover matches"
               gurmukhi="ਜੋੜੀ ਲੱਭੋ"
               body="Browse thoughtfully curated profiles, send interests, and connect with people who match your story."
+              highlight
             />
             <Step
               n="03"
+              icon={MessageCircleHeart}
               title="Begin your saanjh"
               gurmukhi="ਨਵੀਂ ਸਾਂਝ"
               body="When both hearts accept, chat opens. Take it slow, take it real. Families welcome."
@@ -158,64 +166,118 @@ function HomePage() {
       </section>
 
       {/* PRICING TEASER */}
-      <section className="bg-secondary/30 py-24">
+      <section className="font-sf bg-gradient-to-b from-secondary/20 to-secondary/40 py-24">
         <div className="max-w-6xl mx-auto px-5 sm:px-8">
-          <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-[0.3em] text-primary">Membership</p>
-            <h2 className="font-serif text-4xl sm:text-5xl mt-4">Free to begin. Premium when ready.</h2>
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-5">
+              <Crown className="w-3.5 h-3.5" />
+              <span className="text-xs font-semibold tracking-tight uppercase">Membership Plans</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.04em] leading-[1.05]">
+              Free to begin. <span className="text-primary">Premium</span> when ready.
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto tracking-tight">
+              Honest pricing. No hidden fees. Cancel anytime.
+            </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { name: "Free", price: "₹0", tag: "Always", features: ["Limited profiles", "Send interest", "Basic photos"] },
-              { name: "7 Days", price: "₹199", tag: "Quick start", features: ["Chat after match", "5 interests/day", "Full photos"], hl: false },
-              { name: "1 Month", price: "₹499", tag: "Most popular", features: ["Unlimited chat", "Unlimited interests", "Contact access"], hl: true },
-              { name: "6 Months", price: "₹1,999", tag: "Best value", features: ["All premium", "Priority visibility", "Concierge support"] },
+              { name: "Free", price: "₹0", tag: "Always", icon: Heart, features: ["Limited profiles", "Send interest", "Basic photos"] },
+              { name: "7 Days", price: "₹199", tag: "Quick Start", icon: Zap, features: ["Chat after match", "5 interests/day", "Full photos"] },
+              { name: "1 Month", price: "₹499", tag: "Most Popular", icon: Star, features: ["Unlimited chat", "Unlimited interests", "Contact access"], hl: true },
+              { name: "6 Months", price: "₹1,999", tag: "Best Value", icon: Gem, features: ["All premium", "Priority visibility", "Concierge support"] },
             ].map((p) => (
               <div
                 key={p.name}
-                className={`relative rounded-lg p-6 ${p.hl ? "bg-primary text-primary-foreground shadow-xl" : "bg-card border border-border"}`}
+                className={`relative rounded-2xl p-7 transition hover:-translate-y-1 ${
+                  p.hl
+                    ? "bg-gradient-to-br from-primary to-primary/85 text-primary-foreground shadow-2xl shadow-primary/30 ring-1 ring-primary/40"
+                    : "bg-card border border-border/60 shadow-sm hover:shadow-lg"
+                }`}
               >
                 {p.hl && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 text-[10px] uppercase tracking-wider rounded-full bg-gold text-ink">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full bg-gold text-ink shadow">
                     {p.tag}
                   </span>
                 )}
-                <p className={`text-xs uppercase tracking-wide ${p.hl ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{p.tag}</p>
-                <h3 className="font-serif text-2xl mt-1">{p.name}</h3>
-                <p className="font-serif text-4xl mt-3">{p.price}</p>
-                <ul className={`mt-5 space-y-2 text-sm ${p.hl ? "text-primary-foreground/90" : "text-muted-foreground"}`}>
+                <div className={`w-11 h-11 rounded-xl grid place-items-center mb-5 ${
+                  p.hl ? "bg-white/20 text-white" : "bg-primary/10 text-primary"
+                }`}>
+                  <p.icon className="w-5 h-5" />
+                </div>
+                <p className={`text-[11px] font-semibold uppercase tracking-wider ${p.hl ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{p.tag}</p>
+                <h3 className="text-xl font-semibold mt-1 tracking-tight">{p.name}</h3>
+                <div className="mt-4 flex items-baseline gap-1">
+                  <span className="text-4xl font-bold tracking-[-0.03em]">{p.price}</span>
+                </div>
+                <ul className={`mt-6 space-y-3 text-sm ${p.hl ? "text-primary-foreground/95" : "text-foreground/80"}`}>
                   {p.features.map((f) => (
-                    <li key={f} className="flex gap-2"><Check className="w-4 h-4 shrink-0 mt-0.5" /> {f}</li>
+                    <li key={f} className="flex gap-2 items-start">
+                      <span className={`shrink-0 mt-0.5 w-4 h-4 rounded-full grid place-items-center ${
+                        p.hl ? "bg-white/25" : "bg-primary/15 text-primary"
+                      }`}>
+                        <Check className="w-2.5 h-2.5" strokeWidth={3} />
+                      </span>
+                      {f}
+                    </li>
                   ))}
                 </ul>
+                <Link
+                  to="/pricing"
+                  className={`mt-7 inline-flex w-full items-center justify-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-semibold tracking-tight transition ${
+                    p.hl
+                      ? "bg-white text-primary hover:bg-white/90"
+                      : "bg-foreground/5 text-foreground hover:bg-foreground/10"
+                  }`}
+                >
+                  Choose plan <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             ))}
           </div>
-          <div className="text-center mt-10">
-            <Link to="/pricing" className="text-primary font-medium hover:underline inline-flex items-center gap-1">
-              View full pricing <ArrowRight className="w-4 h-4" />
+          <div className="text-center mt-12">
+            <Link to="/pricing" className="text-primary font-semibold tracking-tight inline-flex items-center gap-1.5 hover:gap-2 transition-all">
+              Compare all features <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-28 text-center">
-        <div className="max-w-3xl mx-auto px-5 sm:px-8">
-          <p className="font-gurmukhi text-2xl text-primary">ਆਪਣੀ ਸਾਂਝ ਲੱਭੋ</p>
-          <h2 className="font-serif text-5xl sm:text-6xl leading-tight mt-3">
-            Your <em className="text-primary not-italic">forever</em> begins today.
+      <section className="font-sf relative py-28 overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/85 text-primary-foreground">
+        <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, white 1px, transparent 1px), radial-gradient(circle at 80% 70%, white 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+        <div className="relative max-w-3xl mx-auto px-5 sm:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md mb-6">
+            <Heart className="w-3.5 h-3.5 fill-white" />
+            <span className="text-xs font-semibold tracking-tight uppercase">Join 10,000+ families</span>
+          </div>
+          <p className="font-gurmukhi text-2xl text-white/90 mb-3">ਆਪਣੀ ਸਾਂਝ ਲੱਭੋ</p>
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-[-0.04em] leading-[1.02]">
+            Your <span className="italic font-light">forever</span><br />begins today.
           </h2>
-          <p className="mt-6 text-lg text-muted-foreground">
+          <p className="mt-6 text-lg text-white/85 tracking-tight">
             Free to register. No commitment. Cancel anytime.
           </p>
-          <Link
-            to="/signup"
-            className="mt-10 inline-flex items-center gap-2 px-8 py-4 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition"
-          >
-            Create Free Profile <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="mt-10 flex flex-wrap gap-3 justify-center">
+            <Link
+              to="/signup"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-primary font-semibold tracking-tight hover:bg-white/90 transition shadow-xl"
+            >
+              Create Free Profile <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/pricing"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold tracking-tight hover:bg-white/20 transition"
+            >
+              View Plans
+            </Link>
+          </div>
+          <div className="mt-10 flex items-center justify-center gap-6 text-white/80 text-xs">
+            <span className="inline-flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> Verified profiles</span>
+            <span className="inline-flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> 1,200+ matches</span>
+            <span className="inline-flex items-center gap-1.5"><Star className="w-3.5 h-3.5" /> 4.8 rating</span>
+          </div>
         </div>
       </section>
 
@@ -233,13 +295,24 @@ function Stat({ n, label }: { n: string; label: string }) {
   );
 }
 
-function Step({ n, title, gurmukhi, body }: { n: string; title: string; gurmukhi: string; body: string }) {
+function Step({ n, icon: Icon, title, gurmukhi, body, highlight }: { n: string; icon: React.ComponentType<{ className?: string }>; title: string; gurmukhi: string; body: string; highlight?: boolean }) {
   return (
-    <div className="relative rounded-lg bg-card border border-border p-8 hover:shadow-lg hover:-translate-y-1 transition">
-      <p className="font-serif text-5xl text-primary/30">{n}</p>
-      <h3 className="font-serif text-2xl mt-4">{title}</h3>
-      <p className="font-gurmukhi text-base text-primary/80 mt-1">{gurmukhi}</p>
-      <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{body}</p>
+    <div className={`group relative rounded-2xl p-8 transition hover:-translate-y-1 ${
+      highlight
+        ? "bg-gradient-to-br from-primary/8 to-primary/3 border border-primary/30 shadow-lg shadow-primary/10"
+        : "bg-card border border-border/60 hover:shadow-xl hover:border-primary/20"
+    }`}>
+      <div className="flex items-start justify-between mb-6">
+        <div className={`w-12 h-12 rounded-xl grid place-items-center ${
+          highlight ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition"
+        }`}>
+          <Icon className="w-5 h-5" />
+        </div>
+        <span className="text-xs font-bold tracking-widest text-muted-foreground/60">{n}</span>
+      </div>
+      <h3 className="text-xl font-bold tracking-tight">{title}</h3>
+      <p className="font-gurmukhi text-sm text-primary/80 mt-1">{gurmukhi}</p>
+      <p className="text-sm text-muted-foreground mt-3 leading-relaxed tracking-tight">{body}</p>
     </div>
   );
 }
