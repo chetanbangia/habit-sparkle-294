@@ -295,13 +295,24 @@ function Stat({ n, label }: { n: string; label: string }) {
   );
 }
 
-function Step({ n, title, gurmukhi, body }: { n: string; title: string; gurmukhi: string; body: string }) {
+function Step({ n, icon: Icon, title, gurmukhi, body, highlight }: { n: string; icon: React.ComponentType<{ className?: string }>; title: string; gurmukhi: string; body: string; highlight?: boolean }) {
   return (
-    <div className="relative rounded-lg bg-card border border-border p-8 hover:shadow-lg hover:-translate-y-1 transition">
-      <p className="font-serif text-5xl text-primary/30">{n}</p>
-      <h3 className="font-serif text-2xl mt-4">{title}</h3>
-      <p className="font-gurmukhi text-base text-primary/80 mt-1">{gurmukhi}</p>
-      <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{body}</p>
+    <div className={`group relative rounded-2xl p-8 transition hover:-translate-y-1 ${
+      highlight
+        ? "bg-gradient-to-br from-primary/8 to-primary/3 border border-primary/30 shadow-lg shadow-primary/10"
+        : "bg-card border border-border/60 hover:shadow-xl hover:border-primary/20"
+    }`}>
+      <div className="flex items-start justify-between mb-6">
+        <div className={`w-12 h-12 rounded-xl grid place-items-center ${
+          highlight ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition"
+        }`}>
+          <Icon className="w-5 h-5" />
+        </div>
+        <span className="text-xs font-bold tracking-widest text-muted-foreground/60">{n}</span>
+      </div>
+      <h3 className="text-xl font-bold tracking-tight">{title}</h3>
+      <p className="font-gurmukhi text-sm text-primary/80 mt-1">{gurmukhi}</p>
+      <p className="text-sm text-muted-foreground mt-3 leading-relaxed tracking-tight">{body}</p>
     </div>
   );
 }
