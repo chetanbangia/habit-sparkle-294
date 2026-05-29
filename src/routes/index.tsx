@@ -197,7 +197,7 @@ function HomePage() {
             ].map((p) => (
               <div
                 key={p.name}
-                className={`relative rounded-2xl p-7 transition hover:-translate-y-1 ${
+                className={`tilt-3d relative rounded-2xl p-7 ${
                   p.hl
                     ? "bg-gradient-to-br from-primary to-primary/85 text-primary-foreground shadow-2xl shadow-primary/30 ring-1 ring-primary/40"
                     : "bg-card border border-border/60 shadow-sm hover:shadow-lg"
