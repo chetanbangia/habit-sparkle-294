@@ -39,7 +39,7 @@ function HomePage() {
             alt="A Punjabi couple sharing a quiet moment"
             width={1920}
             height={1280}
-            className="absolute inset-0 w-full h-full object-cover object-left animate-ken-burns"
+            className="absolute inset-0 w-full h-full object-cover object-center animate-ken-burns"
           />
           {/* Soft gradients for legibility */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/10 to-black/0" />
