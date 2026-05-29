@@ -35,52 +35,55 @@ function HomePage() {
         {/* Subtle darkening for legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-16 min-h-[92vh] flex flex-col justify-end">
-          {/* Floating "New match" glass chip */}
-          <div className="hidden md:flex absolute top-28 right-8 items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/25 shadow-2xl text-white">
-            <Heart className="w-4 h-4 fill-white" />
-            <span className="text-xs font-medium tracking-tight">New match today</span>
-          </div>
+        {/* Floating "New match" glass chip — top right */}
+        <div className="hidden md:flex absolute top-28 right-8 z-20 items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/25 shadow-2xl text-white">
+          <Heart className="w-4 h-4 fill-white" />
+          <span className="text-xs font-medium tracking-tight">New match today</span>
+        </div>
 
-          {/* Main glass card */}
-          <div className="max-w-2xl rounded-3xl backdrop-blur-2xl bg-white/15 border border-white/25 shadow-2xl p-8 sm:p-10 text-white animate-fade-up">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md bg-white/15 border border-white/25 mb-6">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span className="text-xs tracking-tight">Trusted by families across Punjab &amp; beyond</span>
-            </div>
+        {/* Full-width glass band — bottom of hero */}
+        <div className="absolute bottom-0 left-0 right-0 z-10">
+          <div className="backdrop-blur-2xl bg-white/12 border-t border-white/20 shadow-2xl">
+            <div className="max-w-7xl mx-auto px-5 sm:px-10 py-10 sm:py-12 text-white animate-fade-up grid lg:grid-cols-12 gap-8 items-end">
+              <div className="lg:col-span-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md bg-white/15 border border-white/25 mb-5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span className="text-xs tracking-tight">Trusted by families across Punjab &amp; beyond</span>
+                </div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.04em]">
-              Where two<br />
-              <span className="italic font-light text-white/95">souls</span> meet.
-            </h1>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.04em]">
+                  Where two <span className="italic font-light text-white/95">souls</span> meet.
+                </h1>
 
-            <p className="font-gurmukhi text-2xl mt-4 text-white/90">
-              ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
-            </p>
+                <p className="font-gurmukhi text-xl sm:text-2xl mt-3 text-white/90">
+                  ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
+                </p>
 
-            <p className="mt-6 text-base sm:text-lg text-white/85 max-w-lg leading-relaxed tracking-tight">
-              Saanjh is a quiet, dignified place to find a life partner — built for the Punjabi and Indian community.
-            </p>
+                <p className="mt-4 text-sm sm:text-base text-white/85 max-w-2xl leading-relaxed tracking-tight">
+                  Saanjh is a quiet, dignified place to find a life partner — built for the Punjabi and Indian community.
+                </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/signup"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-foreground font-medium tracking-tight hover:bg-white/90 transition shadow-lg"
-              >
-                Create Free Profile <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                to="/pricing"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-xl bg-white/10 border border-white/30 text-white font-medium tracking-tight hover:bg-white/20 transition"
-              >
-                See Membership Plans
-              </Link>
-            </div>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link
+                    to="/signup"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-foreground font-medium tracking-tight hover:bg-white/90 transition shadow-lg"
+                  >
+                    Create Free Profile <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link
+                    to="/pricing"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-xl bg-white/10 border border-white/30 text-white font-medium tracking-tight hover:bg-white/20 transition"
+                  >
+                    See Membership Plans
+                  </Link>
+                </div>
+              </div>
 
-            <div className="mt-8 pt-6 border-t border-white/20 grid grid-cols-3 gap-6">
-              <Stat n="10k+" label="Profiles" />
-              <Stat n="1,200+" label="Matches" />
-              <Stat n="100%" label="Verified" />
+              <div className="lg:col-span-4 grid grid-cols-3 gap-4 lg:border-l lg:border-white/20 lg:pl-8">
+                <Stat n="10k+" label="Profiles" />
+                <Stat n="1,200+" label="Matches" />
+                <Stat n="100%" label="Verified" />
+              </div>
             </div>
           </div>
         </div>
