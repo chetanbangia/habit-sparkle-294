@@ -31,10 +31,10 @@ function HomePage() {
       <Header />
 
       {/* HERO — modern dating-app style, light, split layout */}
-      <section className="font-sf relative w-full overflow-hidden bg-gradient-to-b from-[#fdf7fb] via-white to-[#fbf4fb] px-5 sm:px-10 lg:px-16 pt-16 pb-24 lg:pt-24 lg:pb-32">
+      <section className="font-sf relative w-full overflow-hidden bg-gradient-to-b from-background via-background to-surface-alt px-5 sm:px-10 lg:px-16 pt-16 pb-24 lg:pt-24 lg:pb-32">
         {/* Soft gradient blobs */}
-        <div className="pointer-events-none absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-purple-300/40 to-pink-300/30 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-40 -right-32 w-[32rem] h-[32rem] rounded-full bg-gradient-to-tr from-pink-300/40 to-purple-300/20 blur-3xl" />
+        <div className="pointer-events-none absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-primary/25 to-gold/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-40 -right-32 w-[32rem] h-[32rem] rounded-full bg-gradient-to-tr from-secondary/50 to-primary/20 blur-3xl" />
 
         <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-10 items-center">
           {/* LEFT — copy */}
