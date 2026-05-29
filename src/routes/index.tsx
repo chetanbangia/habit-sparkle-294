@@ -104,14 +104,14 @@ function HomePage() {
             >
               <Link
                 to="/signup"
-                className="group relative inline-flex items-center gap-2 px-7 py-4 rounded-full text-white text-sm font-semibold tracking-tight bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 shadow-[0_15px_40px_-10px_rgba(168,85,247,0.6)] hover:shadow-[0_20px_50px_-8px_rgba(236,72,153,0.7)] hover:-translate-y-0.5 transition-all duration-300 animate-pulse-glow"
+                className="group relative inline-flex items-center gap-2 px-7 py-4 rounded-full text-primary-foreground text-sm font-semibold tracking-tight bg-primary hover:bg-primary/90 shadow-[0_15px_40px_-10px_color-mix(in_oklab,var(--color-primary)_55%,transparent)] hover:shadow-[0_20px_50px_-8px_color-mix(in_oklab,var(--color-primary)_65%,transparent)] hover:-translate-y-0.5 transition-all duration-300 animate-pulse-glow"
               >
                 <span>Find your match</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
               </Link>
               <Link
                 to="/pricing"
-                className="text-sm font-semibold text-neutral-700 hover:text-purple-600 transition story-link"
+                className="text-sm font-semibold text-foreground/80 hover:text-primary transition story-link"
               >
                 How it works
               </Link>
