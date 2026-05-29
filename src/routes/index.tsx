@@ -43,7 +43,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.6 }}
-              className="text-sm font-semibold tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500"
+              className="text-sm font-semibold tracking-[0.2em] uppercase text-primary"
             >
               Find your love
             </motion.p>
