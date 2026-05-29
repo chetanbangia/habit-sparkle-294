@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Heart, Shield, Users, Sparkles, ArrowRight, Check, UserPlus, Search, MessageCircleHeart, Crown, Star, Zap, Gem, BadgeCheck, HeartHandshake } from "lucide-react";
+import { Heart, Shield, Users, Sparkles, ArrowRight, Check, UserPlus, Search, MessageCircleHeart, Crown, Star, Zap, Gem, BadgeCheck, HeartHandshake, ShieldCheck, Lock } from "lucide-react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import heroImage from "@/assets/hero-wedding.jpg";
+import heroImage from "@/assets/hero-punjabi-couple.jpg";
 import detail1 from "@/assets/wedding-detail-1.jpg";
 import detail2 from "@/assets/wedding-detail-2.jpg";
 import profile1 from "@/assets/profile-1.jpg";
@@ -30,171 +30,120 @@ function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* HERO — modern dating-app style, light, split layout */}
-      <section className="font-sf relative w-full overflow-hidden bg-gradient-to-b from-background via-background to-surface-alt px-5 sm:px-10 lg:px-16 pt-16 pb-24 lg:pt-24 lg:pb-32">
-        {/* Soft gradient blobs */}
-        <div className="pointer-events-none absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-primary/25 to-gold/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-40 -right-32 w-[32rem] h-[32rem] rounded-full bg-gradient-to-tr from-secondary/50 to-primary/20 blur-3xl" />
+      {/* HERO — full-bleed Punjabi couple, floating stats card */}
+      <section className="font-sf relative w-full">
+        <div className="relative w-full h-[88vh] min-h-[640px] lg:h-[92vh] overflow-hidden">
+          {/* Background image */}
+          <img
+            src={heroImage}
+            alt="A Punjabi couple sharing a quiet moment"
+            width={1920}
+            height={1280}
+            className="absolute inset-0 w-full h-full object-cover object-left animate-ken-burns"
+          />
+          {/* Soft gradients for legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/10 to-black/0" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
 
-        <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-10 items-center">
-          {/* LEFT — copy */}
-          <div className="relative z-10">
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.6 }}
-              className="text-sm font-semibold tracking-[0.2em] uppercase text-primary"
-            >
-              Find your love
-            </motion.p>
+          {/* Right-aligned hero copy */}
+          <div className="relative z-10 max-w-7xl mx-auto h-full px-6 sm:px-10 lg:px-16 flex items-center">
+            <div className="ml-auto w-full lg:w-[52%]">
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.6 }}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md bg-white/15 border border-white/25 text-white/95 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase shadow-lg"
+              >
+                <Heart className="w-3 h-3 fill-primary text-primary" />
+                Saanjh · ਸਾਂਝ
+              </motion.p>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] leading-[1.02] text-foreground"
-            >
-              <span className="relative inline-block">
-                <span>Delete all</span>
-                {/* Hand-drawn strikethrough scribble */}
-                <svg
-                  viewBox="0 0 320 30"
-                  className="absolute left-0 right-0 -bottom-1 sm:bottom-2 w-full h-[0.45em] pointer-events-none"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                className="font-serif mt-5 text-white text-[2.6rem] sm:text-6xl lg:text-[5.2rem] leading-[1.02] tracking-[-0.02em] font-semibold"
+                style={{ textShadow: "0 2px 30px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)" }}
+              >
+                Where <em className="not-italic bg-gradient-to-r from-[#ffd9a8] via-[#ffb38a] to-primary bg-clip-text text-transparent">two souls</em>
+                <br className="hidden sm:block" /> quietly meet.
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.55, duration: 0.7 }}
+                className="mt-5 max-w-lg text-white/90 text-base sm:text-lg tracking-tight leading-relaxed"
+                style={{ textShadow: "0 1px 12px rgba(0,0,0,0.4)" }}
+              >
+                A modern matrimonial home for Punjabi & Indian families — verified profiles, private chat, and meaningful matches built on trust.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.75, duration: 0.7 }}
+                className="mt-8 flex flex-wrap items-center gap-4"
+              >
+                <Link
+                  to="/signup"
+                  className="group inline-flex items-center gap-2 pl-7 pr-6 py-4 rounded-full bg-primary text-primary-foreground text-sm font-semibold tracking-tight shadow-[0_18px_45px_-12px_color-mix(in_oklab,var(--color-primary)_70%,transparent)] hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300 animate-pulse-glow"
                 >
-                  <motion.path
-                    d="M5 18 C 60 4, 130 26, 200 10 S 300 20, 315 12"
-                    fill="none"
-                    stroke="url(#scribbleGrad)"
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ delay: 1, duration: 1.1, ease: "easeOut" }}
-                  />
-                  <defs>
-                    <linearGradient id="scribbleGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="oklch(0.54 0.13 12)" />
-                      <stop offset="100%" stopColor="oklch(0.74 0.10 70)" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </span>{" "}
-              <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-primary via-primary to-gold bg-clip-text text-transparent">
-                Dating apps
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.7 }}
-              className="mt-7 max-w-md text-base sm:text-lg text-muted-foreground leading-relaxed"
-            >
-              Saanjh is where meaningful connections happen — quietly, verified, and built around your family. No swipes. No noise. Just real partners.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.7 }}
-              className="mt-9 flex items-center gap-4"
-            >
-              <Link
-                to="/signup"
-                className="group relative inline-flex items-center gap-2 px-7 py-4 rounded-full text-primary-foreground text-sm font-semibold tracking-tight bg-primary hover:bg-primary/90 shadow-[0_15px_40px_-10px_color-mix(in_oklab,var(--color-primary)_55%,transparent)] hover:shadow-[0_20px_50px_-8px_color-mix(in_oklab,var(--color-primary)_65%,transparent)] hover:-translate-y-0.5 transition-all duration-300 animate-pulse-glow"
-              >
-                <span>Find your match</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
-              </Link>
-              <Link
-                to="/pricing"
-                className="text-sm font-semibold text-foreground/80 hover:text-primary transition story-link"
-              >
-                How it works
-              </Link>
-            </motion.div>
+                  <span>Register Free</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
+                </Link>
+                <Link
+                  to="/about"
+                  className="text-sm font-semibold text-white/95 hover:text-white tracking-tight underline-offset-4 hover:underline"
+                  style={{ textShadow: "0 1px 12px rgba(0,0,0,0.45)" }}
+                >
+                  How Saanjh works →
+                </Link>
+              </motion.div>
+            </div>
           </div>
+        </div>
 
-          {/* RIGHT — stacked tilted profile cards */}
-          <div className="relative h-[480px] sm:h-[560px] lg:h-[600px] flex items-center justify-center">
-            {/* Back card */}
-            <motion.div
-              initial={{ opacity: 0, x: 60, rotate: 0 }}
-              animate={{ opacity: 1, x: 0, rotate: 12 }}
-              transition={{ delay: 0.6, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute right-2 sm:right-6 top-8 w-48 sm:w-56 lg:w-64 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_color-mix(in_oklab,var(--color-primary)_45%,transparent)] animate-float-medium"
-              style={{ transformOrigin: "center" }}
-            >
-              <img src={profile3} alt="Profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <p className="text-[10px] uppercase tracking-[0.2em] opacity-80">Meet people</p>
-                <p className="font-semibold mt-0.5">Priya, 27</p>
-              </div>
-            </motion.div>
+        {/* Floating stats / promise card — overlapping the hero */}
+        <div className="relative z-20 max-w-6xl mx-auto px-5 sm:px-8 -mt-20 sm:-mt-24 lg:-mt-32 pb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-[2rem] bg-card/95 backdrop-blur-xl border border-white/60 shadow-[0_30px_80px_-20px_rgba(60,20,30,0.25)] p-7 sm:p-10"
+          >
+            <div className="mb-7 sm:mb-9">
+              <p className="text-[11px] sm:text-xs font-semibold tracking-[0.25em] uppercase text-muted-foreground">
+                Trusted by Punjabi families
+              </p>
+              <h2 className="font-serif mt-2 text-2xl sm:text-3xl lg:text-4xl tracking-tight text-foreground">
+                Bringing two souls <span className="text-primary italic">together</span>.
+              </h2>
+            </div>
 
-            {/* Left back card */}
-            <motion.div
-              initial={{ opacity: 0, x: -60, rotate: 0 }}
-              animate={{ opacity: 1, x: 0, rotate: -10 }}
-              transition={{ delay: 0.5, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute left-2 sm:left-6 top-12 w-44 sm:w-52 lg:w-60 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_color-mix(in_oklab,var(--color-gold)_45%,transparent)] animate-float-slow"
-            >
-              <img src={profile2} alt="Profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <p className="text-[10px] uppercase tracking-[0.2em] opacity-80">Verified</p>
-                <p className="font-semibold mt-0.5">Arjun, 29</p>
-              </div>
-            </motion.div>
-
-            {/* Front main card with gradient border */}
-            <motion.div
-              initial={{ opacity: 0, y: 40, scale: 0.92 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 0.7, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-56 sm:w-64 lg:w-72 aspect-[3/4] rounded-[2.2rem] p-[3px] bg-gradient-to-br from-primary via-primary to-gold shadow-[0_30px_80px_-20px_color-mix(in_oklab,var(--color-primary)_55%,transparent)] animate-float-tilt"
-            >
-              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-card">
-                <img src={profile1} alt="Featured profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
-                {/* Glass overlay chip */}
-                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/30 border border-white/50">
-                  <Heart className="w-3 h-3 text-primary fill-primary" />
-                  <span className="text-[10px] font-semibold text-white tracking-tight">Find your love</span>
-                </div>
-                {/* Bottom glass card */}
-                <div className="absolute bottom-4 left-4 right-4 rounded-2xl backdrop-blur-xl bg-white/25 border border-white/40 p-3.5 text-white">
-                  <p className="text-[10px] uppercase tracking-[0.2em] opacity-90">New match</p>
-                  <p className="text-base font-bold mt-0.5">Simran, 26</p>
-                  <div className="mt-2 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="text-[11px] opacity-90">Online now</span>
+            <div className="grid sm:grid-cols-3 gap-7 sm:gap-10">
+              {[
+                { icon: BadgeCheck, title: "100% Verified Profiles", body: "Every account is manually reviewed — search by community, profession & location." },
+                { icon: ShieldCheck, title: "Family-Friendly Privacy", body: "Phone, email & socials are auto-hidden. Share only when both hearts say yes." },
+                { icon: Lock, title: "Control Over Your Match", body: "Decide who can view your photos, story and contact — always in your hands." },
+              ].map((f, i) => (
+                <motion.div
+                  key={f.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.05 + i * 0.12, duration: 0.6 }}
+                  className="group"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary grid place-items-center mb-4 group-hover:scale-105 transition-transform">
+                    <f.icon className="w-5 h-5" />
                   </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Floating decorative hearts */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.1, duration: 0.6, type: "spring" }}
-              className="absolute -top-2 left-8 w-12 h-12 rounded-2xl bg-card shadow-xl grid place-items-center animate-float-slow"
-            >
-              <Heart className="w-5 h-5 text-primary fill-primary" />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.25, duration: 0.6, type: "spring" }}
-              className="absolute bottom-6 -left-2 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-gold shadow-xl grid place-items-center text-primary-foreground animate-float-medium"
-            >
-              <Sparkles className="w-6 h-6" />
-            </motion.div>
-          </div>
+                  <h3 className="font-semibold text-foreground tracking-tight text-base sm:text-[17px]">{f.title}</h3>
+                  <div className="mt-2 h-[2px] w-10 bg-gradient-to-r from-primary to-gold rounded-full" />
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.body}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
