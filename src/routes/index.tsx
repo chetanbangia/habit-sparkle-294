@@ -304,7 +304,7 @@ function Stat({ n, label }: { n: string; label: string }) {
 
 function Step({ n, icon: Icon, title, gurmukhi, body, highlight }: { n: string; icon: React.ComponentType<{ className?: string }>; title: string; gurmukhi: string; body: string; highlight?: boolean }) {
   return (
-    <div className={`group relative rounded-2xl p-8 transition hover:-translate-y-1 ${
+    <div className={`tilt-3d group relative rounded-2xl p-8 ${
       highlight
         ? "bg-gradient-to-br from-primary/8 to-primary/3 border border-primary/30 shadow-lg shadow-primary/10"
         : "bg-card border border-border/60 hover:shadow-xl hover:border-primary/20"
