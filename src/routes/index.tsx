@@ -26,17 +26,21 @@ function HomePage() {
       <Header />
 
       {/* HERO — full-bleed image with glass morphism */}
-      <section className="font-sf relative min-h-[92vh] w-full overflow-hidden">
+      <section className="font-sf relative min-h-[92vh] w-full overflow-hidden perspective-1000">
         <img
           src={heroImage}
           alt="Punjabi bride and groom walking through marigold petals at their wedding"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover animate-ken-burns"
         />
         {/* Subtle darkening for legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
 
+        {/* Floating decorative orbs */}
+        <div className="hidden md:block absolute top-32 left-12 w-24 h-24 rounded-full bg-primary/30 blur-3xl animate-float-slow" />
+        <div className="hidden md:block absolute top-1/3 right-1/4 w-32 h-32 rounded-full bg-gold/20 blur-3xl animate-float-medium" />
+
         {/* Floating "New match" glass chip — top right */}
-        <div className="hidden md:flex absolute top-28 right-8 z-20 items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/25 shadow-2xl text-white">
+        <div className="hidden md:flex absolute top-28 right-8 z-20 items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/25 shadow-2xl text-white animate-float-tilt">
           <Heart className="w-4 h-4 fill-white" />
           <span className="text-xs font-medium tracking-tight">New match today</span>
         </div>
