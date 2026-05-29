@@ -27,72 +27,114 @@ function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* HERO — full-bleed image with glass morphism */}
-      <section className="font-sf relative min-h-[92vh] w-full overflow-hidden perspective-1000">
+      {/* HERO — floating glass card, centered, premium */}
+      <section className="font-sf relative min-h-[100vh] w-full overflow-hidden flex items-center justify-center px-4 sm:px-6 py-24 sm:py-8">
+        {/* Background image with slow ken-burns */}
         <img
           src={heroImage}
           alt="Punjabi bride and groom walking through marigold petals at their wedding"
           className="absolute inset-0 w-full h-full object-cover animate-ken-burns"
         />
-        {/* Subtle darkening for legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
+        {/* Romantic vignette */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/45 via-primary/20 to-black/55" />
 
         {/* Floating decorative orbs */}
-        <div className="hidden md:block absolute top-32 left-12 w-24 h-24 rounded-full bg-primary/30 blur-3xl animate-float-slow" />
-        <div className="hidden md:block absolute top-1/3 right-1/4 w-32 h-32 rounded-full bg-gold/20 blur-3xl animate-float-medium" />
+        <div className="hidden md:block absolute top-24 left-16 w-40 h-40 rounded-full bg-primary/40 blur-3xl animate-float-slow" />
+        <div className="hidden md:block absolute bottom-24 right-16 w-52 h-52 rounded-full bg-gold/25 blur-3xl animate-float-medium" />
+        <div className="hidden md:block absolute top-1/2 left-1/3 w-32 h-32 rounded-full bg-white/10 blur-2xl animate-float-tilt" />
 
-        {/* Floating "New match" glass chip — top right */}
-        <div className="hidden md:flex absolute top-28 right-8 z-20 items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/25 shadow-2xl text-white animate-float-tilt">
-          <Heart className="w-4 h-4 fill-white" />
-          <span className="text-xs font-medium tracking-tight">New match today</span>
-        </div>
+        {/* Floating curved glass card */}
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 w-full max-w-6xl mx-auto rounded-[2.5rem] backdrop-blur-2xl bg-white/12 border border-white/25 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.45)] overflow-hidden"
+        >
+          {/* Inner gradient sheen */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-primary/10 pointer-events-none" />
 
-        {/* Full-width glass band — bottom of hero */}
-        <div className="absolute bottom-0 left-0 right-0 z-10">
-          <div className="backdrop-blur-2xl bg-white/12 border-t border-white/20 shadow-2xl">
-            <div className="max-w-7xl mx-auto px-5 sm:px-10 py-10 sm:py-12 text-white animate-fade-up grid lg:grid-cols-12 gap-8 items-end">
-              <div className="lg:col-span-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md bg-white/15 border border-white/25 mb-5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span className="text-xs tracking-tight">Trusted by families across Punjab &amp; beyond</span>
-                </div>
+          <div className="relative grid lg:grid-cols-12 gap-10 lg:gap-8 items-center px-6 sm:px-12 py-12 sm:py-16">
+            {/* LEFT — copy */}
+            <div className="lg:col-span-7 text-center lg:text-left">
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, duration: 0.7 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-md bg-white/15 border border-white/30 mb-6"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-white" />
+                <span className="text-xs tracking-tight text-white/95">Trusted by families across Punjab &amp; beyond</span>
+              </motion.div>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.04em]">
-                  Where two <span className="italic font-light text-white/95">souls</span> meet.
-                </h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-[1.02] tracking-[-0.03em]"
+              >
+                <span className="bg-gradient-to-br from-white via-white to-[#ffd6df] bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(255,200,210,0.25)]">
+                  Where two{" "}
+                  <em className="italic font-light bg-gradient-to-br from-[#ffe1e8] via-[#ffc9d4] to-[#ff9fb5] bg-clip-text text-transparent">
+                    souls
+                  </em>{" "}
+                  meet.
+                </span>
+              </motion.h1>
 
-                <p className="font-gurmukhi text-xl sm:text-2xl mt-3 text-white/90">
-                  ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
-                </p>
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.7 }}
+                className="font-gurmukhi text-2xl sm:text-3xl mt-5 text-white/90"
+              >
+                ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
+              </motion.p>
 
-                <p className="mt-4 text-sm sm:text-base text-white/85 max-w-2xl leading-relaxed tracking-tight">
-                  Saanjh is a quiet, dignified place to find a life partner — built for the Punjabi and Indian community.
-                </p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.75, duration: 0.7 }}
+                className="mt-6 text-base sm:text-lg text-white/85 leading-relaxed tracking-tight max-w-xl mx-auto lg:mx-0"
+              >
+                Saanjh is a quiet, dignified place to find a life partner — built for the Punjabi and Indian community.
+              </motion.p>
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    to="/signup"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-foreground font-medium tracking-tight hover:bg-white/90 transition shadow-lg"
-                  >
-                    Create Free Profile <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <Link
-                    to="/pricing"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-xl bg-white/10 border border-white/30 text-white font-medium tracking-tight hover:bg-white/20 transition"
-                  >
-                    See Membership Plans
-                  </Link>
-                </div>
-              </div>
-
-              <div className="lg:col-span-4 grid grid-cols-3 gap-4 lg:border-l lg:border-white/20 lg:pl-8">
-                <Stat n="10k+" label="Profiles" />
-                <Stat n="1,200+" label="Matches" />
-                <Stat n="100%" label="Verified" />
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.7 }}
+                className="mt-9 flex flex-wrap gap-3 justify-center lg:justify-start"
+              >
+                <Link
+                  to="/signup"
+                  className="group relative inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-foreground font-semibold tracking-tight shadow-[0_10px_40px_-10px_rgba(255,255,255,0.6)] hover:shadow-[0_15px_50px_-5px_rgba(255,200,210,0.8)] hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white via-[#ffe9ee] to-white opacity-0 group-hover:opacity-100 transition" />
+                  <span className="relative">Create Free Profile</span>
+                  <ArrowRight className="relative w-4 h-4 group-hover:translate-x-0.5 transition" />
+                </Link>
+                <Link
+                  to="/pricing"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full backdrop-blur-xl bg-white/10 border border-white/40 text-white font-semibold tracking-tight hover:bg-white/20 hover:-translate-y-0.5 transition-all duration-300 shadow-lg"
+                >
+                  See Membership Plans
+                </Link>
+              </motion.div>
             </div>
+
+            {/* RIGHT — luxury stats */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-5 grid grid-cols-3 lg:grid-cols-1 gap-4 lg:gap-5 lg:pl-6 lg:border-l lg:border-white/20"
+            >
+              <StatCard icon={Users} value={10000} suffix="k+" displayDivisor={1000} label="Profiles" delay={0.9} />
+              <StatCard icon={HeartHandshake} value={1200} suffix="+" label="Matches" delay={1.05} />
+              <StatCard icon={BadgeCheck} value={100} suffix="%" label="Verified" delay={1.2} />
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* HOW IT WORKS */}
