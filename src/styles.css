@@ -47,6 +47,7 @@
   --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
   --font-sans: 'Karla', system-ui, sans-serif;
   --font-gurmukhi: 'Noto Sans Gurmukhi', system-ui, sans-serif;
+  --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif;
 }
 
 :root {
