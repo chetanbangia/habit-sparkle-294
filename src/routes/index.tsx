@@ -182,15 +182,15 @@ function HomePage() {
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.1, duration: 0.6, type: "spring" }}
-              className="absolute -top-2 left-8 w-12 h-12 rounded-2xl bg-white shadow-xl grid place-items-center animate-float-slow"
+              className="absolute -top-2 left-8 w-12 h-12 rounded-2xl bg-card shadow-xl grid place-items-center animate-float-slow"
             >
-              <Heart className="w-5 h-5 text-pink-500 fill-pink-500" />
+              <Heart className="w-5 h-5 text-primary fill-primary" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.25, duration: 0.6, type: "spring" }}
-              className="absolute bottom-6 -left-2 w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-xl grid place-items-center text-white animate-float-medium"
+              className="absolute bottom-6 -left-2 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-gold shadow-xl grid place-items-center text-primary-foreground animate-float-medium"
             >
               <Sparkles className="w-6 h-6" />
             </motion.div>
