@@ -91,7 +91,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="mt-7 max-w-md text-base sm:text-lg text-neutral-500 leading-relaxed"
+              className="mt-7 max-w-md text-base sm:text-lg text-muted-foreground leading-relaxed"
             >
               Saanjh is where meaningful connections happen — quietly, verified, and built around your family. No swipes. No noise. Just real partners.
             </motion.p>
