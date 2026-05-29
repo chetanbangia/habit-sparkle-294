@@ -197,7 +197,6 @@ function HomePage() {
           </div>
         </div>
       </section>
-      </section>
 
       {/* HOW IT WORKS */}
       <section className="font-sf bg-gradient-to-b from-background to-surface-alt py-24">
