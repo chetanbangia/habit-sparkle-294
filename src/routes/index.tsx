@@ -26,17 +26,21 @@ function HomePage() {
       <Header />
 
       {/* HERO — full-bleed image with glass morphism */}
-      <section className="font-sf relative min-h-[92vh] w-full overflow-hidden">
+      <section className="font-sf relative min-h-[92vh] w-full overflow-hidden perspective-1000">
         <img
           src={heroImage}
           alt="Punjabi bride and groom walking through marigold petals at their wedding"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover animate-ken-burns"
         />
         {/* Subtle darkening for legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
 
+        {/* Floating decorative orbs */}
+        <div className="hidden md:block absolute top-32 left-12 w-24 h-24 rounded-full bg-primary/30 blur-3xl animate-float-slow" />
+        <div className="hidden md:block absolute top-1/3 right-1/4 w-32 h-32 rounded-full bg-gold/20 blur-3xl animate-float-medium" />
+
         {/* Floating "New match" glass chip — top right */}
-        <div className="hidden md:flex absolute top-28 right-8 z-20 items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/25 shadow-2xl text-white">
+        <div className="hidden md:flex absolute top-28 right-8 z-20 items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/25 shadow-2xl text-white animate-float-tilt">
           <Heart className="w-4 h-4 fill-white" />
           <span className="text-xs font-medium tracking-tight">New match today</span>
         </div>
@@ -105,7 +109,7 @@ function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 perspective-1000">
             <Step
               n="01"
               icon={UserPlus}
@@ -184,7 +188,7 @@ function HomePage() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 perspective-1000">
             {[
               { name: "Free", price: "₹0", tag: "Always", icon: Heart, features: ["Limited profiles", "Send interest", "Basic photos"] },
               { name: "7 Days", price: "₹199", tag: "Quick Start", icon: Zap, features: ["Chat after match", "5 interests/day", "Full photos"] },
@@ -193,7 +197,7 @@ function HomePage() {
             ].map((p) => (
               <div
                 key={p.name}
-                className={`relative rounded-2xl p-7 transition hover:-translate-y-1 ${
+                className={`tilt-3d relative rounded-2xl p-7 ${
                   p.hl
                     ? "bg-gradient-to-br from-primary to-primary/85 text-primary-foreground shadow-2xl shadow-primary/30 ring-1 ring-primary/40"
                     : "bg-card border border-border/60 shadow-sm hover:shadow-lg"
@@ -300,7 +304,7 @@ function Stat({ n, label }: { n: string; label: string }) {
 
 function Step({ n, icon: Icon, title, gurmukhi, body, highlight }: { n: string; icon: React.ComponentType<{ className?: string }>; title: string; gurmukhi: string; body: string; highlight?: boolean }) {
   return (
-    <div className={`group relative rounded-2xl p-8 transition hover:-translate-y-1 ${
+    <div className={`tilt-3d group relative rounded-2xl p-8 ${
       highlight
         ? "bg-gradient-to-br from-primary/8 to-primary/3 border border-primary/30 shadow-lg shadow-primary/10"
         : "bg-card border border-border/60 hover:shadow-xl hover:border-primary/20"
