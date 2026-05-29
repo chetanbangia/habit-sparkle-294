@@ -374,21 +374,19 @@ function StatCard({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative rounded-2xl backdrop-blur-md bg-white/10 border border-white/20 p-4 sm:p-5 text-center lg:text-left hover:bg-white/15 transition"
+      transition={{ delay, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="group flex flex-col items-center text-center hover:-translate-y-0.5 transition"
     >
-      <div className="flex items-center justify-center lg:justify-start mb-2 sm:mb-3">
-        <span className="w-9 h-9 rounded-xl bg-white/15 border border-white/25 grid place-items-center text-white animate-float-tilt">
-          <Icon className="w-4 h-4" />
-        </span>
-      </div>
-      <p className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-white leading-none">
+      <span className="w-7 h-7 rounded-full bg-white/12 border border-white/20 grid place-items-center text-white/90 mb-2">
+        <Icon className="w-3.5 h-3.5" />
+      </span>
+      <p className="font-serif text-xl sm:text-2xl font-bold tracking-[-0.02em] text-white leading-none">
         <motion.span>{display}</motion.span>
         <span className="text-white/85">{suffix}</span>
       </p>
-      <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/70 mt-2 font-semibold">
+      <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-white/65 mt-1.5 font-semibold">
         {label}
       </p>
     </motion.div>
