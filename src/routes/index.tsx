@@ -1,380 +1,252 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import {
-  Infinity as InfinityIcon, Flame, CalendarDays, Moon, Bell, BarChart3, CloudUpload,
-  CheckCircle2, TrendingUp, Sparkles, ArrowRight, Star, Quote,
-} from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
-import shadowBg from "@/assets/shadow-bg.jpg";
-
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Heart, Shield, Users, Sparkles, ArrowRight, Check } from "lucide-react";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import heroImage from "@/assets/hero-wedding.jpg";
+import detail1 from "@/assets/wedding-detail-1.jpg";
+import detail2 from "@/assets/wedding-detail-2.jpg";
 
 export const Route = createFileRoute("/")({
-  component: LandingPage,
   head: () => ({
     meta: [
-      { title: "Continuum — Build lasting habits, one day at a time" },
-      { name: "description", content: "A calm, focused habit tracker. Track streaks, visualize progress, and build your daily ritual. Free, ad-free, distraction-free." },
+      { title: "Saanjh · ਸਾਂਝ — Trusted Punjabi & Indian Matrimony" },
+      {
+        name: "description",
+        content:
+          "Find your life partner on Saanjh — a modern, verified matrimonial platform for Punjabi and Indian families.",
+      },
     ],
   }),
+  component: HomePage,
 });
 
-function LandingPage() {
-  const navigate = useNavigate();
-  const [checked, setChecked] = useState(false);
-
-  useEffect(() => {
-    import("@/integrations/supabase/client").then(({ supabase }) => {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user) {
-          navigate({ to: "/app" });
-        } else {
-          setChecked(true);
-        }
-      });
-    }).catch(() => setChecked(true));
-  }, [navigate]);
-
+function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <Reviews />
-      <FinalCTA />
+      <Header />
+
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-20 grid lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-6 animate-fade-up">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/60 border border-primary/15 mb-6">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs tracking-wide text-foreground/70">
+                Trusted by families across Punjab &amp; beyond
+              </span>
+            </div>
+
+            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-foreground">
+              Where two<br />
+              <em className="text-primary not-italic">souls</em> meet.
+            </h1>
+
+            <p className="font-gurmukhi text-2xl mt-4 text-primary/90">
+              ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
+            </p>
+
+            <p className="mt-8 text-lg text-muted-foreground max-w-lg leading-relaxed">
+              Saanjh is a quiet, dignified place to find a life partner — built for the Punjabi and Indian community, free to begin, premium when you're ready.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link
+                to="/signup"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition"
+              >
+                Create Free Profile <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/pricing"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-md border border-primary/30 text-foreground font-medium hover:bg-primary/5 transition"
+              >
+                See Membership Plans
+              </Link>
+            </div>
+
+            <div className="mt-10 grid grid-cols-3 gap-6 max-w-md">
+              <Stat n="10k+" label="Profiles" />
+              <Stat n="1,200+" label="Matches" />
+              <Stat n="100%" label="Verified" />
+            </div>
+          </div>
+
+          <div className="lg:col-span-6 relative">
+            <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl shadow-primary/20">
+              <img
+                src={heroImage}
+                alt="Punjabi bride and groom walking through marigold petals at their wedding"
+                className="w-full h-full object-cover"
+                width={1600}
+                height={1200}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent" />
+            </div>
+            <div className="hidden md:block absolute -bottom-8 -left-8 w-44 h-44 rounded-lg overflow-hidden shadow-xl border-4 border-background">
+              <img src={detail1} alt="Bride's mehndi hands" className="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div className="hidden md:flex absolute -top-6 -right-6 w-32 px-4 py-3 rounded-md bg-background shadow-xl border border-border items-center gap-2">
+              <Heart className="w-4 h-4 text-primary fill-primary" />
+              <span className="text-xs font-medium">New match today</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="bg-surface-alt py-24">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8">
+          <div className="text-center mb-16">
+            <p className="divider-ornament max-w-xs mx-auto text-xs uppercase tracking-[0.3em]">
+              How Saanjh Works
+            </p>
+            <h2 className="font-serif text-4xl sm:text-5xl mt-6 leading-tight">
+              Three quiet steps to <em className="text-primary not-italic">forever</em>.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Step
+              n="01"
+              title="Create your profile"
+              gurmukhi="ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ"
+              body="Tell us about you — your background, your values, what you're looking for. Free to start, always."
+            />
+            <Step
+              n="02"
+              title="Discover matches"
+              gurmukhi="ਜੋੜੀ ਲੱਭੋ"
+              body="Browse thoughtfully curated profiles, send interests, and connect with people who match your story."
+            />
+            <Step
+              n="03"
+              title="Begin your saanjh"
+              gurmukhi="ਨਵੀਂ ਸਾਂਝ"
+              body="When both hearts accept, chat opens. Take it slow, take it real. Families welcome."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* TRUST */}
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
+          <div className="relative aspect-square rounded-lg overflow-hidden">
+            <img src={detail2} alt="Sikh couple at gurdwara wedding" className="w-full h-full object-cover" loading="lazy" />
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">Our promise</p>
+            <h2 className="font-serif text-4xl sm:text-5xl leading-tight">
+              Built on <em className="text-primary not-italic">trust</em>, not algorithms.
+            </h2>
+            <p className="mt-6 text-muted-foreground text-lg leading-relaxed">
+              Every profile is reviewed. Contact details are private. Phone numbers, emails, and social handles are automatically blocked everywhere — in profiles and in chat.
+            </p>
+
+            <ul className="mt-8 space-y-4">
+              {[
+                { icon: Shield, t: "Admin-verified profiles", d: "Every account is manually reviewed before going live." },
+                { icon: Users, t: "Family-friendly chat", d: "Match-only conversations, monitored for safety." },
+                { icon: Heart, t: "Dignified by design", d: "No swiping, no shouting — just thoughtful connection." },
+              ].map((f) => (
+                <li key={f.t} className="flex gap-4">
+                  <span className="shrink-0 w-10 h-10 rounded-full bg-primary/10 text-primary grid place-items-center">
+                    <f.icon className="w-4 h-4" />
+                  </span>
+                  <div>
+                    <p className="font-medium text-foreground">{f.t}</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">{f.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* PRICING TEASER */}
+      <section className="bg-secondary/30 py-24">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8">
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary">Membership</p>
+            <h2 className="font-serif text-4xl sm:text-5xl mt-4">Free to begin. Premium when ready.</h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { name: "Free", price: "₹0", tag: "Always", features: ["Limited profiles", "Send interest", "Basic photos"] },
+              { name: "7 Days", price: "₹199", tag: "Quick start", features: ["Chat after match", "5 interests/day", "Full photos"], hl: false },
+              { name: "1 Month", price: "₹499", tag: "Most popular", features: ["Unlimited chat", "Unlimited interests", "Contact access"], hl: true },
+              { name: "6 Months", price: "₹1,999", tag: "Best value", features: ["All premium", "Priority visibility", "Concierge support"] },
+            ].map((p) => (
+              <div
+                key={p.name}
+                className={`relative rounded-lg p-6 ${p.hl ? "bg-primary text-primary-foreground shadow-xl" : "bg-card border border-border"}`}
+              >
+                {p.hl && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 text-[10px] uppercase tracking-wider rounded-full bg-gold text-ink">
+                    {p.tag}
+                  </span>
+                )}
+                <p className={`text-xs uppercase tracking-wide ${p.hl ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{p.tag}</p>
+                <h3 className="font-serif text-2xl mt-1">{p.name}</h3>
+                <p className="font-serif text-4xl mt-3">{p.price}</p>
+                <ul className={`mt-5 space-y-2 text-sm ${p.hl ? "text-primary-foreground/90" : "text-muted-foreground"}`}>
+                  {p.features.map((f) => (
+                    <li key={f} className="flex gap-2"><Check className="w-4 h-4 shrink-0 mt-0.5" /> {f}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/pricing" className="text-primary font-medium hover:underline inline-flex items-center gap-1">
+              View full pricing <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-28 text-center">
+        <div className="max-w-3xl mx-auto px-5 sm:px-8">
+          <p className="font-gurmukhi text-2xl text-primary">ਆਪਣੀ ਸਾਂਝ ਲੱਭੋ</p>
+          <h2 className="font-serif text-5xl sm:text-6xl leading-tight mt-3">
+            Your <em className="text-primary not-italic">forever</em> begins today.
+          </h2>
+          <p className="mt-6 text-lg text-muted-foreground">
+            Free to register. No commitment. Cancel anytime.
+          </p>
+          <Link
+            to="/signup"
+            className="mt-10 inline-flex items-center gap-2 px-8 py-4 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition"
+          >
+            Create Free Profile <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
 }
 
-/* ─── Hero (dark, full-bleed, with navbar) ─── */
-function Hero() {
+function Stat({ n, label }: { n: string; label: string }) {
   return (
-    <>
-      <section className="relative pb-24 pt-0 lg:pb-32 lg:pt-8 xl:pb-40 xl:pt-12" style={{ background: "#050d0a" }}>
-        {/* Background image — weighted to the right */}
-        <img
-          src={heroBg}
-          alt=""
-          width={1920}
-          height={1080}
-          className="absolute inset-0 w-full h-full object-cover object-right pointer-events-none select-none"
-          aria-hidden="true"
-        />
-        {/* Left-side gradient for text legibility */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(to right, rgba(5,13,10,0.5), rgba(5,13,10,0.13), transparent)` }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(to bottom, rgba(0,0,0,0.26), transparent, rgba(5,13,10,0))` }} />
-
-        {/* Navbar */}
-        <nav className="relative z-20 max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2.5">
-            <InfinityIcon className="w-7 h-7 text-white" strokeWidth={2.5} />
-            <span className="text-xl font-semibold text-white/90 tracking-tight">Continuum</span>
-          </Link>
-
-          <div className="hidden sm:flex items-center gap-8 text-sm text-white">
-            <a href="#features" className="hover:text-white/70 transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-white/70 transition-colors">How it works</a>
-            <a href="#reviews" className="hover:text-white/70 transition-colors">Reviews</a>
-          </div>
-
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-white/30 bg-white/10 text-white px-5 py-2.5 text-sm font-medium hover:bg-white/20 backdrop-blur-sm transition-all duration-200 active:scale-[0.97]"
-          >
-            Get started
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </nav>
-
-        {/* Hero content — left aligned */}
-        <div className="relative z-10 max-w-5xl mx-auto px-5 pt-24 pb-12">
-          <div className="max-w-xl">
-            <ScrollReveal delay={80}>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white text-left" style={{ lineHeight: "1.08" }}>
-                Build lasting habits,<br />one day at a time
-              </h1>
-            </ScrollReveal>
-
-            <ScrollReveal delay={160}>
-              <p className="mt-6 text-lg text-white text-left" style={{ textWrap: "pretty", lineHeight: "1.6" }}>
-                Continuum is a calm, focused habit tracker that helps you build consistency through streaks, visual progress, and zero distractions.
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal delay={240}>
-              <div className="mt-10 flex flex-col sm:flex-row items-start gap-3">
-                <Link
-                  to="/login"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#FDAA3E] text-[#1a1a1a] px-7 py-3.5 text-sm font-bold hover:bg-[#fdb95e] transition-all duration-200 active:scale-[0.97] shadow-lg shadow-[#FDAA3E]/25"
-                >
-                  Get started free
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-    </>
+    <div>
+      <p className="font-serif text-3xl text-foreground">{n}</p>
+      <p className="text-xs uppercase tracking-wide text-muted-foreground mt-1">{label}</p>
+    </div>
   );
 }
 
-/* ─── Features ─── */
-const features = [
-  { icon: Flame, title: "Streak tracking", desc: "Watch your momentum build day by day. Never break the chain." },
-  { icon: CalendarDays, title: "Calendar heatmap", desc: "See your consistency at a glance with a beautiful 30-day view." },
-  { icon: BarChart3, title: "Smart insights", desc: "Current streak, longest streak, completion rate — all the stats that matter." },
-  { icon: Bell, title: "Gentle reminders", desc: "Set custom reminder times so you never forget your daily rituals." },
-  { icon: Moon, title: "Dark mode", desc: "Easy on the eyes, day or night. Follows your system or your choice." },
-  { icon: CloudUpload, title: "Cloud sync", desc: "Sign in to sync your habits across devices. Your data, always safe." },
-];
-
-function Features() {
+function Step({ n, title, gurmukhi, body }: { n: string; title: string; gurmukhi: string; body: string }) {
   return (
-    <section id="features" className="py-28 relative bg-white">
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: `url(${shadowBg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed', opacity: 0.75 }} />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto px-5 relative">
-        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
-          {/* Left: App preview — light mode on mint bg */}
-          <div className="w-full lg:w-[420px] flex-shrink-0">
-            <div className="relative">
-              <div className="rounded-xl bg-white border border-black/[0.06] shadow-xl overflow-hidden">
-                {/* Mock browser chrome */}
-                <div className="border-b border-black/5 px-5 py-3 flex items-center gap-3 bg-gray-50/80">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
-                  </div>
-                  <div className="flex-1" />
-                </div>
-
-                {/* Mock app content — light mode */}
-                <div className="p-6 space-y-4">
-                  <div>
-                    <p className="text-xs text-black/40">Good morning</p>
-                    <p className="text-lg font-semibold text-black/90 mt-0.5">Your daily ritual</p>
-                    <p className="text-xs text-black/40 mt-1">Tuesday, March 25 · 2 of 4 minted</p>
-                  </div>
-
-                  {/* Mock progress ring */}
-                  <div className="flex justify-center py-3">
-                    <div className="w-20 h-20 rounded-full border-[4px] border-black/[0.06] flex items-center justify-center relative">
-                      <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 80 80">
-                        <circle cx="40" cy="40" r="35" fill="none" strokeWidth="4" stroke="#FDAA3E" strokeDasharray="220" strokeDashoffset="110" strokeLinecap="round" />
-                      </svg>
-                      <span className="text-lg font-bold text-black/80">50%</span>
-                    </div>
-                  </div>
-
-                  {/* Mock habit cards */}
-                  {[
-                    { name: "Morning meditation", color: "#FDAA3E", done: true },
-                    { name: "Read 20 pages", color: "hsl(217, 91%, 60%)", done: true },
-                    { name: "Exercise 30 min", color: "hsl(25, 95%, 53%)", done: false },
-                    { name: "Journal", color: "hsl(270, 95%, 75%)", done: false },
-                  ].map((h) => (
-                    <div key={h.name} className="flex items-center gap-3 rounded-xl border border-black/[0.06] bg-black/[0.02] px-4 py-3">
-                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: h.color }} />
-                      <span className={`flex-1 text-sm ${h.done ? "line-through text-black/30" : "text-black/70"}`}>{h.name}</span>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${h.done ? "bg-primary border-primary" : "border-black/15"}`}>
-                        {h.done && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Features content */}
-          <div className="flex-1">
-            <ScrollReveal>
-              <div className="mb-10">
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-3">Features</p>
-                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground" style={{ lineHeight: "1.15" }}>
-                  Everything you need,<br />nothing you don't
-                </h2>
-              </div>
-            </ScrollReveal>
-
-            <div className="grid sm:grid-cols-2 gap-5">
-              {features.map((f, i) => (
-                <ScrollReveal key={f.title} delay={i * 70}>
-                  <div className="group rounded-2xl border border-black/[0.04] bg-black/[0.03] p-5 hover:bg-black/[0.05] hover:border-black/[0.08] transition-all duration-300">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform duration-300">
-                      <f.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-1">{f.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div className="relative rounded-lg bg-card border border-border p-8 hover:shadow-lg hover:-translate-y-1 transition">
+      <p className="font-serif text-5xl text-primary/30">{n}</p>
+      <h3 className="font-serif text-2xl mt-4">{title}</h3>
+      <p className="font-gurmukhi text-base text-primary/80 mt-1">{gurmukhi}</p>
+      <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{body}</p>
+    </div>
   );
-}
-
-/* ─── How it works ─── */
-const steps = [
-  { num: "1", icon: CheckCircle2, title: "Create your habits", desc: "Add the habits you want to build — daily, specific days, or a weekly goal." },
-  { num: "2", icon: Sparkles, title: "Tap to complete", desc: "One tap each day to log your progress. Quick, satisfying, done." },
-  { num: "3", icon: TrendingUp, title: "Watch your growth", desc: "See streaks grow, heatmaps fill in, and your consistency compound over time." },
-];
-
-function HowItWorks() {
-  return (
-    <section id="how-it-works" className="py-28 bg-white border-y border-border/30">
-      <div className="max-w-4xl mx-auto px-5">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-3">How it works</p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground" style={{ lineHeight: "1.15" }}>
-              Three steps to a better routine
-            </h2>
-          </div>
-        </ScrollReveal>
-
-        <div className="relative grid md:grid-cols-3 gap-8">
-          {/* Connecting line between steps (desktop only) */}
-          <div className="hidden md:block absolute top-7 left-[calc(16.67%+28px)] right-[calc(16.67%+28px)] h-px border-t-2 border-dashed border-primary/20" />
-
-          {steps.map((s, i) => (
-            <ScrollReveal key={s.num} delay={i * 100}>
-              <div className="text-center relative">
-                <div className="w-14 h-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-5 text-lg font-bold shadow-lg shadow-primary/15">
-                  {s.num}
-                </div>
-                <h3 className="font-semibold text-foreground text-lg mb-2">{s.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">{s.desc}</p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Reviews ─── */
-const reviews = [
-  { name: "Daniel Cooper", role: "Product designer", avatar: "https://trovdwfeqyzlxzrtfbjv.supabase.co/storage/v1/object/public/assets/avatars/e20b66f6-e7e9-4c00-93d3-506c78cb66c2/avatar-19.jpg", quote: "Finally a habit app that doesn't try to be a social network. Just me and my habits.", rating: 5 },
-  { name: "Emma Lindström", role: "Software engineer", avatar: "https://trovdwfeqyzlxzrtfbjv.supabase.co/storage/v1/object/public/assets/avatars/307e7512-1637-4ea2-a5cd-875afeb1002b/avatar-21.jpg", quote: "The streak tracking is addictive in the best way. I've been consistent for 47 days now.", rating: 5 },
-  { name: "Ryan Mitchell", role: "Grad student", avatar: "https://trovdwfeqyzlxzrtfbjv.supabase.co/storage/v1/object/public/assets/avatars/6b77ccde-dbfd-4c23-8c9f-ce748683068a/avatar-16.jpg", quote: "Love the heatmap. Seeing my progress visually keeps me motivated more than any badge system.", rating: 5 },
-  { name: "Mei Lin", role: "Freelance writer", avatar: "https://trovdwfeqyzlxzrtfbjv.supabase.co/storage/v1/object/public/assets/avatars/b706d9a7-3a45-4fdd-ab47-c7023d4d0cfa/avatar-20.jpg", quote: "Simple, clean, no ads. This is what every habit tracker should be. Dark mode is gorgeous too.", rating: 5 },
-];
-
-function Reviews() {
-  return (
-    <section id="reviews" className="py-28">
-      <div className="max-w-5xl mx-auto px-5">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-3">Reviews</p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground" style={{ lineHeight: "1.15" }}>
-              Loved by habit builders
-            </h2>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid sm:grid-cols-2 gap-5">
-          {reviews.map((r, i) => (
-            <ScrollReveal key={r.name} delay={i * 80}>
-              <div className="relative rounded-2xl border border-border/50 bg-card p-6 overflow-hidden">
-                {/* Decorative quote mark */}
-                <Quote className="absolute top-4 right-4 w-10 h-10 text-primary/[0.06] rotate-180" />
-
-                <div className="flex gap-0.5 mb-4">
-                  {Array.from({ length: r.rating }).map((_, j) => (
-                    <Star key={j} className="w-4 h-4 fill-primary text-primary" />
-                  ))}
-                </div>
-                <p className="text-sm text-foreground leading-relaxed mb-5 relative">"{r.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <img src={r.avatar} alt={r.name} className="w-[4.5rem] h-[4.5rem] rounded-full object-cover" loading="lazy" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{r.name}</p>
-                    <p className="text-xs text-muted-foreground">{r.role}</p>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Final CTA ─── */
-function FinalCTA() {
-  return (
-    <section className="relative overflow-hidden py-28" style={{ background: "#050d0a" }}>
-      {/* Reuse hero bg for visual cohesion */}
-      <img
-        src={heroBg}
-        alt=""
-        width={1920}
-        height={1080}
-        loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none select-none"
-        aria-hidden="true"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#050d0a] via-transparent to-[#050d0a] pointer-events-none" />
-
-      <div className="relative z-10 max-w-2xl mx-auto px-5 text-center">
-        <ScrollReveal>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white" style={{ lineHeight: "1.15" }}>
-            Ready to build better habits?
-          </h2>
-          <p className="mt-4 text-white max-w-md mx-auto" style={{ textWrap: "pretty" }}>
-            Join thousands of people using Continuum to build consistency, one day at a time.
-          </p>
-          <Link
-            to="/login"
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#FDAA3E] text-[#1a1a1a] px-8 py-4 text-sm font-semibold hover:bg-[#fdb95e] transition-all duration-200 active:scale-[0.97] shadow-lg shadow-[#FDAA3E]/25"
-          >
-            Get started free
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </ScrollReveal>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Footer ─── */
-function Footer() {
-  return (
-    <footer className="border-t border-border/40 py-12">
-      <div className="max-w-5xl mx-auto px-5">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <InfinityIcon className="w-6 h-6 text-foreground" strokeWidth={2.5} />
-            <span className="font-semibold text-foreground text-sm">Continuum</span>
-          </div>
-
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-foreground transition-colors">How it works</a>
-            <a href="#reviews" className="hover:text-foreground transition-colors">Reviews</a>
-            <Link to="/login" className="hover:text-foreground transition-colors">Sign in</Link>
-            <Link to="/login" className="hover:text-foreground transition-colors">Get started</Link>
-          </div>
-
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Continuum</p>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-/* ─── Scroll reveal wrapper (animations removed) ─── */
-function ScrollReveal({ children }: { children: React.ReactNode; delay?: number }) {
-  return <>{children}</>;
 }
