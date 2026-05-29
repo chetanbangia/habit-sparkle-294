@@ -141,7 +141,7 @@ function HomePage() {
               initial={{ opacity: 0, x: -60, rotate: 0 }}
               animate={{ opacity: 1, x: 0, rotate: -10 }}
               transition={{ delay: 0.5, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute left-2 sm:left-6 top-12 w-44 sm:w-52 lg:w-60 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_rgba(236,72,153,0.4)] animate-float-slow"
+              className="absolute left-2 sm:left-6 top-12 w-44 sm:w-52 lg:w-60 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_color-mix(in_oklab,var(--color-gold)_45%,transparent)] animate-float-slow"
             >
               <img src={profile2} alt="Profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
