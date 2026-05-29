@@ -7,6 +7,9 @@ import { Footer } from "@/components/Footer";
 import heroImage from "@/assets/hero-wedding.jpg";
 import detail1 from "@/assets/wedding-detail-1.jpg";
 import detail2 from "@/assets/wedding-detail-2.jpg";
+import profile1 from "@/assets/profile-1.jpg";
+import profile2 from "@/assets/profile-2.jpg";
+import profile3 from "@/assets/profile-3.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,109 +30,172 @@ function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* HERO — floating glass card, centered, premium */}
-      <section className="font-sf relative min-h-[88vh] w-full overflow-hidden flex items-center justify-center px-4 sm:px-8 py-20 sm:py-16">
-        {/* Background image with slow ken-burns */}
-        <img
-          src={heroImage}
-          alt="Punjabi bride and groom walking through marigold petals at their wedding"
-          className="absolute inset-0 w-full h-full object-cover animate-ken-burns"
-        />
-        {/* Romantic vignette */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-primary/15 to-black/50" />
+      {/* HERO — modern dating-app style, light, split layout */}
+      <section className="font-sf relative w-full overflow-hidden bg-gradient-to-b from-[#fdf7fb] via-white to-[#fbf4fb] px-5 sm:px-10 lg:px-16 pt-16 pb-24 lg:pt-24 lg:pb-32">
+        {/* Soft gradient blobs */}
+        <div className="pointer-events-none absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-purple-300/40 to-pink-300/30 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-40 -right-32 w-[32rem] h-[32rem] rounded-full bg-gradient-to-tr from-pink-300/40 to-purple-300/20 blur-3xl" />
 
-        {/* Floating decorative orbs */}
-        <div className="hidden md:block absolute top-24 left-16 w-32 h-32 rounded-full bg-primary/30 blur-3xl animate-float-slow" />
-        <div className="hidden md:block absolute bottom-24 right-16 w-40 h-40 rounded-full bg-gold/20 blur-3xl animate-float-medium" />
-
-        {/* Compact floating glass card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 w-full max-w-2xl mx-auto rounded-[2rem] backdrop-blur-xl bg-white/8 border border-white/20 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)] overflow-hidden"
-        >
-          {/* Inner gradient sheen */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-primary/8 pointer-events-none" />
-
-          <div className="relative px-6 sm:px-10 py-10 sm:py-12 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
+        <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-10 items-center">
+          {/* LEFT — copy */}
+          <div className="relative z-10">
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25, duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full backdrop-blur-md bg-white/12 border border-white/25 mb-5"
+              transition={{ delay: 0.15, duration: 0.6 }}
+              className="text-sm font-semibold tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500"
             >
-              <Sparkles className="w-3 h-3 text-white" />
-              <span className="text-[11px] tracking-tight text-white/95">Trusted by families across Punjab &amp; beyond</span>
-            </motion.div>
+              Find your love
+            </motion.p>
 
             <motion.h1
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-[-0.03em]"
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] leading-[1.02] text-neutral-900"
             >
-              <span className="bg-gradient-to-br from-white via-white to-[#ffd6df] bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(255,200,210,0.25)]">
-                Where two{" "}
-                <em className="italic font-light bg-gradient-to-br from-[#ffe1e8] via-[#ffc9d4] to-[#ff9fb5] bg-clip-text text-transparent">
-                  souls
-                </em>{" "}
-                meet.
+              <span className="relative inline-block">
+                <span>Delete all</span>
+                {/* Hand-drawn strikethrough scribble */}
+                <svg
+                  viewBox="0 0 320 30"
+                  className="absolute left-0 right-0 -bottom-1 sm:bottom-2 w-full h-[0.45em] pointer-events-none"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <motion.path
+                    d="M5 18 C 60 4, 130 26, 200 10 S 300 20, 315 12"
+                    fill="none"
+                    stroke="url(#scribbleGrad)"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ delay: 1, duration: 1.1, ease: "easeOut" }}
+                  />
+                  <defs>
+                    <linearGradient id="scribbleGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#a855f7" />
+                      <stop offset="100%" stopColor="#ec4899" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>{" "}
+              <br className="hidden sm:block" />
+              <span className="bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+                Dating apps
               </span>
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.55, duration: 0.6 }}
-              className="font-gurmukhi text-xl sm:text-2xl mt-4 text-white/90"
+              transition={{ delay: 0.5, duration: 0.7 }}
+              className="mt-7 max-w-md text-base sm:text-lg text-neutral-500 leading-relaxed"
             >
-              ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.6 }}
-              className="mt-4 text-sm sm:text-base text-white/80 leading-relaxed tracking-tight max-w-md mx-auto"
-            >
-              A quiet, dignified place to find a life partner — built for the Punjabi and Indian community.
+              Saanjh is where meaningful connections happen — quietly, verified, and built around your family. No swipes. No noise. Just real partners.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.85, duration: 0.6 }}
-              className="mt-7 flex flex-wrap gap-2.5 justify-center"
+              transition={{ delay: 0.7, duration: 0.7 }}
+              className="mt-9 flex items-center gap-4"
             >
               <Link
                 to="/signup"
-                className="group inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white text-foreground text-sm font-semibold tracking-tight shadow-[0_8px_30px_-8px_rgba(255,255,255,0.6)] hover:-translate-y-0.5 transition-all duration-300"
+                className="group relative inline-flex items-center gap-2 px-7 py-4 rounded-full text-white text-sm font-semibold tracking-tight bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 shadow-[0_15px_40px_-10px_rgba(168,85,247,0.6)] hover:shadow-[0_20px_50px_-8px_rgba(236,72,153,0.7)] hover:-translate-y-0.5 transition-all duration-300 animate-pulse-glow"
               >
-                Create Free Profile
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition" />
+                <span>Find your match</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
               </Link>
               <Link
                 to="/pricing"
-                className="inline-flex items-center px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/10 border border-white/30 text-white text-sm font-semibold tracking-tight hover:bg-white/20 hover:-translate-y-0.5 transition-all duration-300"
+                className="text-sm font-semibold text-neutral-700 hover:text-purple-600 transition story-link"
               >
-                See Plans
+                How it works
               </Link>
             </motion.div>
+          </div>
 
-            {/* Stats row */}
+          {/* RIGHT — stacked tilted profile cards */}
+          <div className="relative h-[480px] sm:h-[560px] lg:h-[600px] flex items-center justify-center">
+            {/* Back card */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.7 }}
-              className="mt-8 pt-6 border-t border-white/15 grid grid-cols-3 gap-3 sm:gap-6"
+              initial={{ opacity: 0, x: 60, rotate: 0 }}
+              animate={{ opacity: 1, x: 0, rotate: 12 }}
+              transition={{ delay: 0.6, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute right-2 sm:right-6 top-8 w-48 sm:w-56 lg:w-64 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_rgba(168,85,247,0.4)] animate-float-medium"
+              style={{ transformOrigin: "center" }}
             >
-              <StatCard icon={Users} value={10000} suffix="k+" displayDivisor={1000} label="Profiles" delay={1.05} />
-              <StatCard icon={HeartHandshake} value={1200} suffix="+" label="Matches" delay={1.15} />
-              <StatCard icon={BadgeCheck} value={100} suffix="%" label="Verified" delay={1.25} />
+              <img src={profile3} alt="Profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <p className="text-[10px] uppercase tracking-[0.2em] opacity-80">Meet people</p>
+                <p className="font-semibold mt-0.5">Priya, 27</p>
+              </div>
+            </motion.div>
+
+            {/* Left back card */}
+            <motion.div
+              initial={{ opacity: 0, x: -60, rotate: 0 }}
+              animate={{ opacity: 1, x: 0, rotate: -10 }}
+              transition={{ delay: 0.5, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute left-2 sm:left-6 top-12 w-44 sm:w-52 lg:w-60 aspect-[3/4] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-20px_rgba(236,72,153,0.4)] animate-float-slow"
+            >
+              <img src={profile2} alt="Profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <p className="text-[10px] uppercase tracking-[0.2em] opacity-80">Verified</p>
+                <p className="font-semibold mt-0.5">Arjun, 29</p>
+              </div>
+            </motion.div>
+
+            {/* Front main card with gradient border */}
+            <motion.div
+              initial={{ opacity: 0, y: 40, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: 0.7, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10 w-56 sm:w-64 lg:w-72 aspect-[3/4] rounded-[2.2rem] p-[3px] bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 shadow-[0_30px_80px_-20px_rgba(168,85,247,0.55)] animate-float-tilt"
+            >
+              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-white">
+                <img src={profile1} alt="Featured profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
+                {/* Glass overlay chip */}
+                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/30 border border-white/50">
+                  <Heart className="w-3 h-3 text-pink-500 fill-pink-500" />
+                  <span className="text-[10px] font-semibold text-white tracking-tight">Find your love</span>
+                </div>
+                {/* Bottom glass card */}
+                <div className="absolute bottom-4 left-4 right-4 rounded-2xl backdrop-blur-xl bg-white/25 border border-white/40 p-3.5 text-white">
+                  <p className="text-[10px] uppercase tracking-[0.2em] opacity-90">New match</p>
+                  <p className="text-base font-bold mt-0.5">Simran, 26</p>
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <span className="text-[11px] opacity-90">Online now</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Floating decorative hearts */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.1, duration: 0.6, type: "spring" }}
+              className="absolute -top-2 left-8 w-12 h-12 rounded-2xl bg-white shadow-xl grid place-items-center animate-float-slow"
+            >
+              <Heart className="w-5 h-5 text-pink-500 fill-pink-500" />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.25, duration: 0.6, type: "spring" }}
+              className="absolute bottom-6 -left-2 w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-xl grid place-items-center text-white animate-float-medium"
+            >
+              <Sparkles className="w-6 h-6" />
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* HOW IT WORKS */}
