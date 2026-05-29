@@ -25,69 +25,62 @@ function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-20 grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-6 animate-fade-up">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/60 border border-primary/15 mb-6">
-              <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs tracking-wide text-foreground/70">
-                Trusted by families across Punjab &amp; beyond
-              </span>
+      {/* HERO — full-bleed image with glass morphism */}
+      <section className="font-sf relative min-h-[92vh] w-full overflow-hidden">
+        <img
+          src={heroImage}
+          alt="Punjabi bride and groom walking through marigold petals at their wedding"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Subtle darkening for legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
+
+        <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-16 min-h-[92vh] flex flex-col justify-end">
+          {/* Floating "New match" glass chip */}
+          <div className="hidden md:flex absolute top-28 right-8 items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/25 shadow-2xl text-white">
+            <Heart className="w-4 h-4 fill-white" />
+            <span className="text-xs font-medium tracking-tight">New match today</span>
+          </div>
+
+          {/* Main glass card */}
+          <div className="max-w-2xl rounded-3xl backdrop-blur-2xl bg-white/15 border border-white/25 shadow-2xl p-8 sm:p-10 text-white animate-fade-up">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md bg-white/15 border border-white/25 mb-6">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="text-xs tracking-tight">Trusted by families across Punjab &amp; beyond</span>
             </div>
 
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-foreground">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.04em]">
               Where two<br />
-              <em className="text-primary not-italic">souls</em> meet.
+              <span className="italic font-light text-white/95">souls</span> meet.
             </h1>
 
-            <p className="font-gurmukhi text-2xl mt-4 text-primary/90">
+            <p className="font-gurmukhi text-2xl mt-4 text-white/90">
               ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
             </p>
 
-            <p className="mt-8 text-lg text-muted-foreground max-w-lg leading-relaxed">
-              Saanjh is a quiet, dignified place to find a life partner — built for the Punjabi and Indian community, free to begin, premium when you're ready.
+            <p className="mt-6 text-base sm:text-lg text-white/85 max-w-lg leading-relaxed tracking-tight">
+              Saanjh is a quiet, dignified place to find a life partner — built for the Punjabi and Indian community.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/signup"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-foreground font-medium tracking-tight hover:bg-white/90 transition shadow-lg"
               >
                 Create Free Profile <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/pricing"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-md border border-primary/30 text-foreground font-medium hover:bg-primary/5 transition"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-xl bg-white/10 border border-white/30 text-white font-medium tracking-tight hover:bg-white/20 transition"
               >
                 See Membership Plans
               </Link>
             </div>
 
-            <div className="mt-10 grid grid-cols-3 gap-6 max-w-md">
+            <div className="mt-8 pt-6 border-t border-white/20 grid grid-cols-3 gap-6">
               <Stat n="10k+" label="Profiles" />
               <Stat n="1,200+" label="Matches" />
               <Stat n="100%" label="Verified" />
-            </div>
-          </div>
-
-          <div className="lg:col-span-6 relative">
-            <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl shadow-primary/20">
-              <img
-                src={heroImage}
-                alt="Punjabi bride and groom walking through marigold petals at their wedding"
-                className="w-full h-full object-cover"
-                width={1600}
-                height={1200}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent" />
-            </div>
-            <div className="hidden md:block absolute -bottom-8 -left-8 w-44 h-44 rounded-lg overflow-hidden shadow-xl border-4 border-background">
-              <img src={detail1} alt="Bride's mehndi hands" className="w-full h-full object-cover" loading="lazy" />
-            </div>
-            <div className="hidden md:flex absolute -top-6 -right-6 w-32 px-4 py-3 rounded-md bg-background shadow-xl border border-border items-center gap-2">
-              <Heart className="w-4 h-4 text-primary fill-primary" />
-              <span className="text-xs font-medium">New match today</span>
             </div>
           </div>
         </div>

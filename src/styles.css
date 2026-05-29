@@ -47,6 +47,7 @@
   --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
   --font-sans: 'Karla', system-ui, sans-serif;
   --font-gurmukhi: 'Noto Sans Gurmukhi', system-ui, sans-serif;
+  --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif;
 }
 
 :root {
@@ -133,6 +134,7 @@
     letter-spacing: -0.01em;
   }
   .font-gurmukhi { font-family: var(--font-gurmukhi); }
+  .font-sf { font-family: var(--font-sf); letter-spacing: -0.015em; }
   ::selection { background-color: var(--color-primary); color: var(--color-primary-foreground); }
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: transparent; }
