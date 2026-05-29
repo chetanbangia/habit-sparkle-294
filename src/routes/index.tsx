@@ -7,6 +7,9 @@ import { Footer } from "@/components/Footer";
 import heroImage from "@/assets/hero-wedding.jpg";
 import detail1 from "@/assets/wedding-detail-1.jpg";
 import detail2 from "@/assets/wedding-detail-2.jpg";
+import profile1 from "@/assets/profile-1.jpg";
+import profile2 from "@/assets/profile-2.jpg";
+import profile3 from "@/assets/profile-3.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
