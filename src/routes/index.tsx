@@ -52,7 +52,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] leading-[1.02] text-neutral-900"
+              className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] leading-[1.02] text-foreground"
             >
               <span className="relative inline-block">
                 <span>Delete all</span>
