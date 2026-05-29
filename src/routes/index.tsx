@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Heart, Shield, Users, Sparkles, ArrowRight, Check, UserPlus, Search, MessageCircleHeart, Crown, Star, Zap, Gem, BadgeCheck, HeartHandshake } from "lucide-react";
+import { Heart, Shield, Users, Sparkles, ArrowRight, Check, UserPlus, Search, MessageCircleHeart, Crown, Star, Zap, Gem, BadgeCheck, HeartHandshake, ShieldCheck, Lock } from "lucide-react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import heroImage from "@/assets/hero-wedding.jpg";
+import heroImage from "@/assets/hero-punjabi-couple.jpg";
 import detail1 from "@/assets/wedding-detail-1.jpg";
 import detail2 from "@/assets/wedding-detail-2.jpg";
 import profile1 from "@/assets/profile-1.jpg";
