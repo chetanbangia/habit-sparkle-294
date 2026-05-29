@@ -346,6 +346,60 @@ function Stat({ n, label }: { n: string; label: string }) {
   );
 }
 
+function StatCard({
+  icon: Icon,
+  value,
+  suffix = "",
+  displayDivisor,
+  label,
+  delay = 0,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  value: number;
+  suffix?: string;
+  displayDivisor?: number;
+  label: string;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const count = useMotionValue(0);
+  const spring = useSpring(count, { damping: 30, stiffness: 60 });
+  const display = useTransform(spring, (latest) => {
+    const v = displayDivisor ? latest / displayDivisor : latest;
+    return displayDivisor
+      ? Math.round(v).toLocaleString()
+      : Math.round(v).toLocaleString();
+  });
+
+  useEffect(() => {
+    if (inView) count.set(value);
+  }, [inView, value, count]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative rounded-2xl backdrop-blur-md bg-white/10 border border-white/20 p-4 sm:p-5 text-center lg:text-left hover:bg-white/15 transition"
+    >
+      <div className="flex items-center justify-center lg:justify-start mb-2 sm:mb-3">
+        <span className="w-9 h-9 rounded-xl bg-white/15 border border-white/25 grid place-items-center text-white animate-float-tilt">
+          <Icon className="w-4 h-4" />
+        </span>
+      </div>
+      <p className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-white leading-none">
+        <motion.span>{display}</motion.span>
+        <span className="text-white/85">{suffix}</span>
+      </p>
+      <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/70 mt-2 font-semibold">
+        {label}
+      </p>
+    </motion.div>
+  );
+}
+
 function Step({ n, icon: Icon, title, gurmukhi, body, highlight }: { n: string; icon: React.ComponentType<{ className?: string }>; title: string; gurmukhi: string; body: string; highlight?: boolean }) {
   return (
     <div className={`tilt-3d group relative rounded-2xl p-8 ${
