@@ -156,13 +156,13 @@ function HomePage() {
               initial={{ opacity: 0, y: 40, scale: 0.92 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.7, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-56 sm:w-64 lg:w-72 aspect-[3/4] rounded-[2.2rem] p-[3px] bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 shadow-[0_30px_80px_-20px_rgba(168,85,247,0.55)] animate-float-tilt"
+              className="relative z-10 w-56 sm:w-64 lg:w-72 aspect-[3/4] rounded-[2.2rem] p-[3px] bg-gradient-to-br from-primary via-primary to-gold shadow-[0_30px_80px_-20px_color-mix(in_oklab,var(--color-primary)_55%,transparent)] animate-float-tilt"
             >
-              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-white">
+              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-card">
                 <img src={profile1} alt="Featured profile" loading="lazy" width={768} height={1024} className="w-full h-full object-cover" />
                 {/* Glass overlay chip */}
                 <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/30 border border-white/50">
-                  <Heart className="w-3 h-3 text-pink-500 fill-pink-500" />
+                  <Heart className="w-3 h-3 text-primary fill-primary" />
                   <span className="text-[10px] font-semibold text-white tracking-tight">Find your love</span>
                 </div>
                 {/* Bottom glass card */}
