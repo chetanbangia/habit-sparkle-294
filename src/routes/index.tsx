@@ -28,7 +28,7 @@ function HomePage() {
       <Header />
 
       {/* HERO — floating glass card, centered, premium */}
-      <section className="font-sf relative min-h-[100vh] w-full overflow-hidden flex items-center justify-center px-4 sm:px-6 py-24 sm:py-8">
+      <section className="font-sf relative min-h-[88vh] w-full overflow-hidden flex items-center justify-center px-4 sm:px-8 py-20 sm:py-16">
         {/* Background image with slow ken-burns */}
         <img
           src={heroImage}
@@ -36,102 +36,97 @@ function HomePage() {
           className="absolute inset-0 w-full h-full object-cover animate-ken-burns"
         />
         {/* Romantic vignette */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/45 via-primary/20 to-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-primary/15 to-black/50" />
 
         {/* Floating decorative orbs */}
-        <div className="hidden md:block absolute top-24 left-16 w-40 h-40 rounded-full bg-primary/40 blur-3xl animate-float-slow" />
-        <div className="hidden md:block absolute bottom-24 right-16 w-52 h-52 rounded-full bg-gold/25 blur-3xl animate-float-medium" />
-        <div className="hidden md:block absolute top-1/2 left-1/3 w-32 h-32 rounded-full bg-white/10 blur-2xl animate-float-tilt" />
+        <div className="hidden md:block absolute top-24 left-16 w-32 h-32 rounded-full bg-primary/30 blur-3xl animate-float-slow" />
+        <div className="hidden md:block absolute bottom-24 right-16 w-40 h-40 rounded-full bg-gold/20 blur-3xl animate-float-medium" />
 
-        {/* Floating curved glass card */}
+        {/* Compact floating glass card */}
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.97 }}
+          initial={{ opacity: 0, y: 30, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 w-full max-w-6xl mx-auto rounded-[2.5rem] backdrop-blur-2xl bg-white/12 border border-white/25 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.45)] overflow-hidden"
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 w-full max-w-2xl mx-auto rounded-[2rem] backdrop-blur-xl bg-white/8 border border-white/20 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)] overflow-hidden"
         >
           {/* Inner gradient sheen */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-primary/10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-primary/8 pointer-events-none" />
 
-          <div className="relative grid lg:grid-cols-12 gap-10 lg:gap-8 items-center px-6 sm:px-12 py-12 sm:py-16">
-            {/* LEFT — copy */}
-            <div className="lg:col-span-7 text-center lg:text-left">
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.7 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-md bg-white/15 border border-white/30 mb-6"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-white" />
-                <span className="text-xs tracking-tight text-white/95">Trusted by families across Punjab &amp; beyond</span>
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 22 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-[1.02] tracking-[-0.03em]"
-              >
-                <span className="bg-gradient-to-br from-white via-white to-[#ffd6df] bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(255,200,210,0.25)]">
-                  Where two{" "}
-                  <em className="italic font-light bg-gradient-to-br from-[#ffe1e8] via-[#ffc9d4] to-[#ff9fb5] bg-clip-text text-transparent">
-                    souls
-                  </em>{" "}
-                  meet.
-                </span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.7 }}
-                className="font-gurmukhi text-2xl sm:text-3xl mt-5 text-white/90"
-              >
-                ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.75, duration: 0.7 }}
-                className="mt-6 text-base sm:text-lg text-white/85 leading-relaxed tracking-tight max-w-xl mx-auto lg:mx-0"
-              >
-                Saanjh is a quiet, dignified place to find a life partner — built for the Punjabi and Indian community.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9, duration: 0.7 }}
-                className="mt-9 flex flex-wrap gap-3 justify-center lg:justify-start"
-              >
-                <Link
-                  to="/signup"
-                  className="group relative inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-foreground font-semibold tracking-tight shadow-[0_10px_40px_-10px_rgba(255,255,255,0.6)] hover:shadow-[0_15px_50px_-5px_rgba(255,200,210,0.8)] hover:-translate-y-0.5 transition-all duration-300"
-                >
-                  <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white via-[#ffe9ee] to-white opacity-0 group-hover:opacity-100 transition" />
-                  <span className="relative">Create Free Profile</span>
-                  <ArrowRight className="relative w-4 h-4 group-hover:translate-x-0.5 transition" />
-                </Link>
-                <Link
-                  to="/pricing"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full backdrop-blur-xl bg-white/10 border border-white/40 text-white font-semibold tracking-tight hover:bg-white/20 hover:-translate-y-0.5 transition-all duration-300 shadow-lg"
-                >
-                  See Membership Plans
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* RIGHT — luxury stats */}
+          <div className="relative px-6 sm:px-10 py-10 sm:py-12 text-center">
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-5 grid grid-cols-3 lg:grid-cols-1 gap-4 lg:gap-5 lg:pl-6 lg:border-l lg:border-white/20"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full backdrop-blur-md bg-white/12 border border-white/25 mb-5"
             >
-              <StatCard icon={Users} value={10000} suffix="k+" displayDivisor={1000} label="Profiles" delay={0.9} />
-              <StatCard icon={HeartHandshake} value={1200} suffix="+" label="Matches" delay={1.05} />
-              <StatCard icon={BadgeCheck} value={100} suffix="%" label="Verified" delay={1.2} />
+              <Sparkles className="w-3 h-3 text-white" />
+              <span className="text-[11px] tracking-tight text-white/95">Trusted by families across Punjab &amp; beyond</span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-[-0.03em]"
+            >
+              <span className="bg-gradient-to-br from-white via-white to-[#ffd6df] bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(255,200,210,0.25)]">
+                Where two{" "}
+                <em className="italic font-light bg-gradient-to-br from-[#ffe1e8] via-[#ffc9d4] to-[#ff9fb5] bg-clip-text text-transparent">
+                  souls
+                </em>{" "}
+                meet.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55, duration: 0.6 }}
+              className="font-gurmukhi text-xl sm:text-2xl mt-4 text-white/90"
+            >
+              ਜਿੱਥੇ ਦੋ ਰੂਹਾਂ ਮਿਲਦੀਆਂ ਹਨ
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+              className="mt-4 text-sm sm:text-base text-white/80 leading-relaxed tracking-tight max-w-md mx-auto"
+            >
+              A quiet, dignified place to find a life partner — built for the Punjabi and Indian community.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.85, duration: 0.6 }}
+              className="mt-7 flex flex-wrap gap-2.5 justify-center"
+            >
+              <Link
+                to="/signup"
+                className="group inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white text-foreground text-sm font-semibold tracking-tight shadow-[0_8px_30px_-8px_rgba(255,255,255,0.6)] hover:-translate-y-0.5 transition-all duration-300"
+              >
+                Create Free Profile
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition" />
+              </Link>
+              <Link
+                to="/pricing"
+                className="inline-flex items-center px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/10 border border-white/30 text-white text-sm font-semibold tracking-tight hover:bg-white/20 hover:-translate-y-0.5 transition-all duration-300"
+              >
+                See Plans
+              </Link>
+            </motion.div>
+
+            {/* Stats row */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.7 }}
+              className="mt-8 pt-6 border-t border-white/15 grid grid-cols-3 gap-3 sm:gap-6"
+            >
+              <StatCard icon={Users} value={10000} suffix="k+" displayDivisor={1000} label="Profiles" delay={1.05} />
+              <StatCard icon={HeartHandshake} value={1200} suffix="+" label="Matches" delay={1.15} />
+              <StatCard icon={BadgeCheck} value={100} suffix="%" label="Verified" delay={1.25} />
             </motion.div>
           </div>
         </motion.div>
@@ -379,21 +374,19 @@ function StatCard({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative rounded-2xl backdrop-blur-md bg-white/10 border border-white/20 p-4 sm:p-5 text-center lg:text-left hover:bg-white/15 transition"
+      transition={{ delay, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="group flex flex-col items-center text-center hover:-translate-y-0.5 transition"
     >
-      <div className="flex items-center justify-center lg:justify-start mb-2 sm:mb-3">
-        <span className="w-9 h-9 rounded-xl bg-white/15 border border-white/25 grid place-items-center text-white animate-float-tilt">
-          <Icon className="w-4 h-4" />
-        </span>
-      </div>
-      <p className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-white leading-none">
+      <span className="w-7 h-7 rounded-full bg-white/12 border border-white/20 grid place-items-center text-white/90 mb-2">
+        <Icon className="w-3.5 h-3.5" />
+      </span>
+      <p className="font-serif text-xl sm:text-2xl font-bold tracking-[-0.02em] text-white leading-none">
         <motion.span>{display}</motion.span>
         <span className="text-white/85">{suffix}</span>
       </p>
-      <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/70 mt-2 font-semibold">
+      <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-white/65 mt-1.5 font-semibold">
         {label}
       </p>
     </motion.div>
