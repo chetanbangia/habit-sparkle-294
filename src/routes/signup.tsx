@@ -1,29 +1,24 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, User } from "lucide-react";
 import { toast } from "sonner";
 import { Logo } from "@/components/Logo";
 
-async function getSupabase() {
-  const { supabase } = await import("@/integrations/supabase/client");
-  return supabase;
-}
-
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/signup")({
   head: () => ({
     meta: [
-      { title: "Sign in · Saanjh" },
-      { name: "description", content: "Sign in to your Saanjh matrimonial account." },
+      { title: "Register Free · Saanjh" },
+      { name: "description", content: "Create your free Saanjh matrimonial profile in under a minute." },
     ],
   }),
-  component: LoginPage,
+  component: SignupPage,
 });
 
-function LoginPage() {
+function SignupPage() {
   const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
@@ -32,15 +27,15 @@ function LoginPage() {
     try {
       const { lovable } = await import("@/integrations/lovable/index");
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: `${window.location.origin}/browse`,
+        redirect_uri: `${window.location.origin}/profile`,
       });
       if (result.error) {
-        toast.error(result.error instanceof Error ? result.error.message : "Google sign-in failed");
+        toast.error(result.error instanceof Error ? result.error.message : "Google sign-up failed");
       } else if (!result.redirected) {
-        navigate({ to: "/browse" });
+        navigate({ to: "/profile" });
       }
     } catch (err: any) {
-      toast.error(err.message || "Google sign-in failed");
+      toast.error(err.message || "Google sign-up failed");
     } finally {
       setGoogleLoading(false);
     }
@@ -48,18 +43,23 @@ function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) return;
+    if (!name.trim() || !email.trim() || !password.trim()) return;
     setLoading(true);
     try {
-      const supabase = await getSupabase();
-      const { error } = await supabase.auth.signInWithPassword({
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/profile`,
+          data: { full_name: name.trim() },
+        },
       });
       if (error) throw error;
-      navigate({ to: "/browse" });
+      toast.success("Welcome to Saanjh! Check your email to confirm your account.");
+      navigate({ to: "/login" });
     } catch (err: any) {
-      toast.error(err.message || "Sign-in failed");
+      toast.error(err.message || "Sign-up failed");
     } finally {
       setLoading(false);
     }
@@ -74,8 +74,9 @@ function LoginPage() {
 
         <div className="bg-card border border-border rounded-xl p-8 shadow-xl shadow-primary/5">
           <div className="text-center mb-7">
-            <h1 className="font-serif text-3xl">Welcome back</h1>
-            <p className="font-gurmukhi text-base mt-1 text-primary/80">ਜੀ ਆਇਆਂ ਨੂੰ</p>
+            <h1 className="font-serif text-3xl">Begin your saanjh</h1>
+            <p className="font-gurmukhi text-base mt-1 text-primary/80">ਆਪਣੀ ਸਾਂਝ ਸ਼ੁਰੂ ਕਰੋ</p>
+            <p className="text-sm text-muted-foreground mt-2">Free forever. No credit card.</p>
           </div>
 
           <button
@@ -100,6 +101,14 @@ function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="relative">
+              <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                value={name} onChange={(e) => setName(e.target.value)}
+                placeholder="Your name" required maxLength={80}
+                className="w-full rounded-md border border-input bg-background pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            <div className="relative">
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="email" value={email} onChange={(e) => setEmail(e.target.value)}
@@ -110,33 +119,29 @@ function LoginPage() {
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
-                type={showPassword ? "text" : "password"} value={password}
-                onChange={(e) => setPassword(e.target.value)} placeholder="Password"
-                required minLength={6} maxLength={128}
-                className="w-full rounded-md border border-input bg-background pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password (min 6 characters)" required minLength={6} maxLength={128}
+                className="w-full rounded-md border border-input bg-background pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               />
-              <button type="button" onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
             </div>
-
-            <Link to="/reset-password" className="block text-right text-xs text-primary hover:underline">
-              Forgot password?
-            </Link>
 
             <button
               type="submit" disabled={loading}
               className="w-full rounded-md bg-primary text-primary-foreground py-3 text-sm font-medium hover:opacity-90 transition disabled:opacity-50"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? "Creating..." : "Create free profile"}
             </button>
           </form>
+
+          <p className="text-xs text-muted-foreground text-center mt-5 leading-relaxed">
+            By signing up you agree to our <Link to="/terms" className="text-primary hover:underline">Terms</Link> and{" "}
+            <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
+          </p>
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
-          New to Saanjh?{" "}
-          <Link to="/signup" className="text-primary font-medium hover:underline">Create free profile</Link>
+          Already a member?{" "}
+          <Link to="/login" className="text-primary font-medium hover:underline">Sign in</Link>
         </p>
       </div>
     </div>

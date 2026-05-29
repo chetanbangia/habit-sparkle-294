@@ -8,50 +8,29 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Continuum — Build lasting habits" },
-      { name: "description", content: "A calm, focused habit tracker. Track streaks, visualize progress, and build your daily ritual." },
-      { name: "author", content: "Continuum" },
-      { property: "og:title", content: "Continuum — Build lasting habits" },
-      { property: "og:description", content: "A calm, focused habit tracker. Track streaks, visualize progress, and build your daily ritual." },
+      { title: "Saanjh · ਸਾਂਝ — Where two souls meet" },
+      {
+        name: "description",
+        content:
+          "Saanjh is a modern matrimonial platform for Punjabi and Indian families. Verified profiles, private chat, and meaningful matches built on trust.",
+      },
+      { name: "author", content: "Saanjh" },
+      { property: "og:title", content: "Saanjh · ਸਾਂਝ — Where two souls meet" },
+      {
+        property: "og:description",
+        content:
+          "A modern matrimonial home for the Punjabi and Indian community. Verified profiles, dignified matchmaking.",
+      },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/b9uXYmgdTyWTYhHfslbu4ZrHRZ73/social-images/social-1775640713838-continuum.webp" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/b9uXYmgdTyWTYhHfslbu4ZrHRZ73/social-images/social-1775640713838-continuum.webp" },
-      { name: "twitter:title", content: "Continuum — Build lasting habits" },
-      { name: "twitter:description", content: "A calm, focused habit tracker. Track streaks, visualize progress, and build your daily ritual." },
+      { name: "twitter:title", content: "Saanjh · ਸਾਂਝ — Where two souls meet" },
+      {
+        name: "twitter:description",
+        content: "A modern matrimonial home for the Punjabi and Indian community.",
+      },
     ],
     links: [
-      {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
-      },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap",
-      },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
-    scripts: [
-      {
-        children: `
-          (function() {
-            var theme = localStorage.getItem('continuum_theme') || 'light';
-            if (theme === 'system') {
-              theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-            if (theme === 'dark') document.documentElement.classList.add('dark');
-          })();
-        `,
-      },
+      { rel: "stylesheet", href: appCss },
     ],
   }),
   shellComponent: RootShell,

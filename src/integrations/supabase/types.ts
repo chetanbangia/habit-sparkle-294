@@ -14,92 +14,381 @@ export type Database = {
   }
   public: {
     Tables: {
-      habit_logs: {
+      blocks: {
         Row: {
+          blocked_id: string
+          blocker_id: string
           created_at: string
-          date: string
-          habit_id: string
-          id: string
-          user_id: string
         }
         Insert: {
+          blocked_id: string
+          blocker_id: string
           created_at?: string
-          date: string
-          habit_id: string
-          id?: string
-          user_id: string
         }
         Update: {
+          blocked_id?: string
+          blocker_id?: string
           created_at?: string
-          date?: string
-          habit_id?: string
-          id?: string
-          user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "habit_logs_habit_id_fkey"
-            columns: ["habit_id"]
-            isOneToOne: false
-            referencedRelation: "habits"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      habits: {
+      daily_views: {
         Row: {
-          color: string
-          created_at: string
-          description: string
-          frequency: Json
-          id: string
-          name: string
-          position: number
-          reminder_time: string | null
+          count: number
+          date: string
           user_id: string
         }
         Insert: {
-          color?: string
-          created_at?: string
-          description?: string
-          frequency?: Json
-          id?: string
-          name: string
-          position?: number
-          reminder_time?: string | null
+          count?: number
+          date?: string
           user_id: string
         }
         Update: {
-          color?: string
-          created_at?: string
-          description?: string
-          frequency?: Json
-          id?: string
-          name?: string
-          position?: number
-          reminder_time?: string | null
+          count?: number
+          date?: string
           user_id?: string
         }
         Relationships: []
       }
-      profiles: {
+      interests: {
         Row: {
-          avatar_url: string | null
           created_at: string
-          display_name: string | null
           id: string
+          receiver_id: string
+          responded_at: string | null
+          sender_id: string
+          status: Database["public"]["Enums"]["interest_status_t"]
         }
         Insert: {
-          avatar_url?: string | null
           created_at?: string
-          display_name?: string | null
-          id: string
+          id?: string
+          receiver_id: string
+          responded_at?: string | null
+          sender_id: string
+          status?: Database["public"]["Enums"]["interest_status_t"]
         }
         Update: {
+          created_at?: string
+          id?: string
+          receiver_id?: string
+          responded_at?: string | null
+          sender_id?: string
+          status?: Database["public"]["Enums"]["interest_status_t"]
+        }
+        Relationships: []
+      }
+      matches: {
+        Row: {
+          created_at: string
+          id: string
+          user_a: string
+          user_b: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_a: string
+          user_b: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_a?: string
+          user_b?: string
+        }
+        Relationships: []
+      }
+      memberships: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          plan_code: string
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          plan_code: string
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          plan_code?: string
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memberships_plan_code_fkey"
+            columns: ["plan_code"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          match_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          match_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          match_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount_paise: number
+          created_at: string
+          id: string
+          plan_code: string
+          provider: string
+          provider_ref: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount_paise: number
+          created_at?: string
+          id?: string
+          plan_code: string
+          provider?: string
+          provider_ref?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount_paise?: number
+          created_at?: string
+          id?: string
+          plan_code?: string
+          provider?: string
+          provider_ref?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_plan_code_fkey"
+            columns: ["plan_code"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      plans: {
+        Row: {
+          active: boolean
+          code: string
+          duration_days: number
+          features: Json
+          name: string
+          price_paise: number
+          sort_order: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          duration_days: number
+          features?: Json
+          name: string
+          price_paise: number
+          sort_order?: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          duration_days?: number
+          features?: Json
+          name?: string
+          price_paise?: number
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      profile_photos: {
+        Row: {
+          created_at: string
+          id: string
+          is_primary: boolean
+          position: number
+          profile_id: string
+          storage_path: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          position?: number
+          profile_id: string
+          storage_path: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          position?: number
+          profile_id?: string
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_photos_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          about_me: string | null
+          avatar_url: string | null
+          city: string | null
+          community: string | null
+          created_at: string
+          display_name: string | null
+          district: string | null
+          dob: string | null
+          education: string | null
+          gender: Database["public"]["Enums"]["gender_t"] | null
+          height_cm: number | null
+          id: string
+          marital_status: Database["public"]["Enums"]["marital_status_t"] | null
+          occupation: string | null
+          partner_preference: string | null
+          phone: string | null
+          religion: string | null
+          status: Database["public"]["Enums"]["profile_status_t"]
+          updated_at: string
+        }
+        Insert: {
+          about_me?: string | null
           avatar_url?: string | null
+          city?: string | null
+          community?: string | null
           created_at?: string
           display_name?: string | null
+          district?: string | null
+          dob?: string | null
+          education?: string | null
+          gender?: Database["public"]["Enums"]["gender_t"] | null
+          height_cm?: number | null
+          id: string
+          marital_status?:
+            | Database["public"]["Enums"]["marital_status_t"]
+            | null
+          occupation?: string | null
+          partner_preference?: string | null
+          phone?: string | null
+          religion?: string | null
+          status?: Database["public"]["Enums"]["profile_status_t"]
+          updated_at?: string
+        }
+        Update: {
+          about_me?: string | null
+          avatar_url?: string | null
+          city?: string | null
+          community?: string | null
+          created_at?: string
+          display_name?: string | null
+          district?: string | null
+          dob?: string | null
+          education?: string | null
+          gender?: Database["public"]["Enums"]["gender_t"] | null
+          height_cm?: number | null
           id?: string
+          marital_status?:
+            | Database["public"]["Enums"]["marital_status_t"]
+            | null
+          occupation?: string | null
+          partner_preference?: string | null
+          phone?: string | null
+          religion?: string | null
+          status?: Database["public"]["Enums"]["profile_status_t"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          reported_id: string
+          reporter_id: string
+          resolved: boolean
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason: string
+          reported_id: string
+          reporter_id: string
+          resolved?: boolean
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          reported_id?: string
+          reporter_id?: string
+          resolved?: boolean
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -108,10 +397,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      gender_t: "male" | "female" | "other"
+      interest_status_t: "pending" | "accepted" | "rejected"
+      marital_status_t: "never_married" | "divorced" | "widowed"
+      profile_status_t: "pending" | "approved" | "blocked"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -238,6 +537,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      gender_t: ["male", "female", "other"],
+      interest_status_t: ["pending", "accepted", "rejected"],
+      marital_status_t: ["never_married", "divorced", "widowed"],
+      profile_status_t: ["pending", "approved", "blocked"],
+    },
   },
 } as const
