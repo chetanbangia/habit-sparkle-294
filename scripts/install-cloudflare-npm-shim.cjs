@@ -19,7 +19,7 @@ const realNpmCli = ${JSON.stringify(npmCliPath)};
 const args = process.argv.slice(2);
 
 if (args[0] === "c1") {
-  console.log("Cloudflare build command compatibility: treating npm c1 as npm ci already completed.");
+  console.log("Cloudflare build command compatibility: skipping mistyped npm c1 command.");
   process.exit(0);
 }
 
@@ -35,14 +35,19 @@ process.exit(result.status ?? 1);
     process.exit(0);
   }
 
-  const shim = `
-// lovable-cloudflare-c1-shim
+  const shim = `// lovable-cloudflare-c1-shim
 if (process.argv[2] === "c1") {
-  process.argv[2] = "ci";
+  console.log("Cloudflare build command compatibility: skipping mistyped npm c1 command.");
+  process.exit(0);
 }
 `;
 
-  fs.writeFileSync(npmCliPath, shim + npmCli);
+  const shebangMatch = npmCli.match(/^#!.*\n/);
+  const patchedNpmCli = shebangMatch
+    ? shebangMatch[0] + shim + npmCli.slice(shebangMatch[0].length)
+    : shim + npmCli;
+
+  fs.writeFileSync(npmCliPath, patchedNpmCli);
   console.log("Installed Cloudflare npm c1→ci compatibility shim.");
 } catch (error) {
   console.warn("Could not install Cloudflare npm c1 compatibility shim:", error.message);
