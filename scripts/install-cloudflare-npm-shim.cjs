@@ -2,12 +2,33 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const npmCliPath = process.env.npm_execpath;
+const localBinDir = path.join(process.cwd(), "node_modules", ".bin");
+const localNpmShimPath = path.join(localBinDir, "npm");
 
 if (!npmCliPath || path.basename(npmCliPath) !== "npm-cli.js") {
   process.exit(0);
 }
 
 try {
+  fs.mkdirSync(localBinDir, { recursive: true });
+  fs.writeFileSync(
+    localNpmShimPath,
+    `#!/usr/bin/env node
+const { spawnSync } = require("node:child_process");
+const realNpmCli = ${JSON.stringify(npmCliPath)};
+const args = process.argv.slice(2);
+
+if (args[0] === "c1") {
+  console.log("Cloudflare build command compatibility: treating npm c1 as npm ci already completed.");
+  process.exit(0);
+}
+
+const result = spawnSync(process.execPath, [realNpmCli, ...args], { stdio: "inherit" });
+process.exit(result.status ?? 1);
+`,
+  );
+  fs.chmodSync(localNpmShimPath, 0o755);
+
   const npmCli = fs.readFileSync(npmCliPath, "utf8");
 
   if (npmCli.includes("lovable-cloudflare-c1-shim")) {
