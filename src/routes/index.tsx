@@ -21,6 +21,9 @@ export const Route = createFileRoute("/")({
           "Find your life partner on Saanjh — a modern, verified matrimonial platform for Punjabi and Indian families.",
       },
     ],
+    links: [
+      { rel: "preload", as: "image", href: heroImage, fetchpriority: "high" },
+    ],
   }),
   component: HomePage,
 });
