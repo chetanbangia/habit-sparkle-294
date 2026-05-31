@@ -42,6 +42,8 @@ function HomePage() {
             alt="A Punjabi couple sharing a quiet moment"
             width={1920}
             height={1280}
+            fetchPriority="high"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover object-center animate-ken-burns"
           />
           {/* Soft gradients for legibility */}
