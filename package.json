@@ -9,8 +9,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
-    "lint": "eslint .",
-    "postinstall": "node scripts/install-cloudflare-npm-shim.cjs"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
