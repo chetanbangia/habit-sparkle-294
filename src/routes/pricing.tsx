@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Sparkles } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing · Saanjh — Free to begin, premium when ready" },
-      { name: "description", content: "Simple matrimonial membership plans. Start free, upgrade for chat, contact access, and unlimited interests." },
+      { title: "Membership Plans · Saanjh" },
+      { name: "description", content: "Choose from Free, Basic, Bronze and Gold matrimonial membership plans. Transparent pricing in Indian Rupees." },
       { property: "og:title", content: "Saanjh Membership Plans" },
       { property: "og:description", content: "Free, ₹199, ₹499, ₹1999 — transparent matrimonial pricing." },
     ],
@@ -15,22 +15,87 @@ export const Route = createFileRoute("/pricing")({
   component: PricingPage,
 });
 
-const PLANS = [
+type Plan = {
+  name: string;
+  price: string;
+  perMonth?: string;
+  duration: string;
+  tagline: string;
+  popular?: boolean;
+  best?: boolean;
+  features: { label: string; included: boolean }[];
+  cta: string;
+  href: string;
+};
+
+const PLANS: Plan[] = [
   {
-    name: "Free", price: "₹0", duration: "Forever",
-    features: ["View limited profiles", "3 interests / day", "Basic (blurred) photos", "No chat"],
+    name: "Free",
+    price: "₹0",
+    duration: "Forever",
+    tagline: "Get started, no card required",
+    cta: "Get Started",
+    href: "/signup",
+    features: [
+      { label: "View limited profiles", included: true },
+      { label: "3 interests per day", included: true },
+      { label: "Blurred photos", included: true },
+      { label: "Chat with matches", included: false },
+      { label: "Contact access", included: false },
+      { label: "Priority visibility", included: false },
+    ],
   },
   {
-    name: "7 Days", price: "₹199", duration: "1 week",
-    features: ["Chat after match", "5 interests / day", "Full photos", "Email support"],
+    name: "Basic",
+    price: "₹199",
+    duration: "7 days",
+    tagline: "Try premium for a week",
+    cta: "Choose Basic",
+    href: "/membership",
+    features: [
+      { label: "View all profiles", included: true },
+      { label: "5 interests per day", included: true },
+      { label: "Full photos", included: true },
+      { label: "Chat with matches", included: true },
+      { label: "Contact access", included: false },
+      { label: "Priority visibility", included: false },
+    ],
   },
   {
-    name: "1 Month", price: "₹499", duration: "30 days", popular: true,
-    features: ["Unlimited chat", "Unlimited interests", "Contact access", "Priority browse"],
+    name: "Bronze",
+    price: "₹499",
+    duration: "30 days",
+    perMonth: "₹16/day",
+    tagline: "Most chosen by members",
+    popular: true,
+    cta: "Choose Bronze",
+    href: "/membership",
+    features: [
+      { label: "View all profiles", included: true },
+      { label: "Unlimited interests", included: true },
+      { label: "Full photos", included: true },
+      { label: "Chat with matches", included: true },
+      { label: "Contact access", included: true },
+      { label: "Priority visibility", included: false },
+    ],
   },
   {
-    name: "6 Months", price: "₹1,999", duration: "180 days",
-    features: ["Everything in 1 Month", "Priority visibility", "Concierge support", "Featured profile badge"],
+    name: "Gold",
+    price: "₹1,999",
+    duration: "6 months",
+    perMonth: "₹11/day",
+    tagline: "Best value, longest validity",
+    best: true,
+    cta: "Choose Gold",
+    href: "/membership",
+    features: [
+      { label: "View all profiles", included: true },
+      { label: "Unlimited interests", included: true },
+      { label: "Full photos", included: true },
+      { label: "Chat with matches", included: true },
+      { label: "Contact access", included: true },
+      { label: "Priority visibility", included: true },
+    ],
   },
 ];
 
@@ -38,53 +103,91 @@ function PricingPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <section className="max-w-6xl mx-auto px-5 sm:px-8 py-20">
+      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-20">
         <div className="text-center max-w-2xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.3em] text-primary">Membership Plans</p>
-          <h1 className="font-serif text-5xl sm:text-6xl mt-4 leading-tight">
-            One <em className="text-primary not-italic">honest</em> price.
+          <p className="text-[11px] uppercase tracking-[0.28em] text-primary font-medium">Membership Plans</p>
+          <h1 className="text-4xl sm:text-5xl mt-3 leading-[1.05] tracking-tight">
+            Find your match, <span className="text-primary">faster</span>.
           </h1>
-          <p className="font-gurmukhi text-xl mt-3 text-primary/80">ਸਪੱਸ਼ਟ ਕੀਮਤ</p>
-          <p className="text-lg text-muted-foreground mt-6">
-            No hidden fees. No auto-renewals you didn't ask for. Cancel anytime.
+          <p className="text-base sm:text-lg text-muted-foreground mt-4">
+            Transparent pricing. No auto-renewals. Cancel anytime.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-16">
-          {PLANS.map((p) => (
-            <div
-              key={p.name}
-              className={`relative rounded-lg p-7 ${p.popular ? "bg-primary text-primary-foreground shadow-2xl scale-[1.03]" : "bg-card border border-border"}`}
-            >
-              {p.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-[10px] uppercase tracking-wider rounded-full bg-gold text-ink flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" /> Most popular
-                </span>
-              )}
-              <h3 className="font-serif text-2xl">{p.name}</h3>
-              <p className={`text-xs uppercase tracking-wide mt-1 ${p.popular ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{p.duration}</p>
-              <p className="font-serif text-5xl mt-5">{p.price}</p>
-              <ul className={`mt-6 space-y-2.5 text-sm ${p.popular ? "text-primary-foreground/90" : "text-muted-foreground"}`}>
-                {p.features.map((f) => (
-                  <li key={f} className="flex gap-2"><Check className="w-4 h-4 shrink-0 mt-0.5" /> {f}</li>
-                ))}
-              </ul>
-              <Link
-                to={p.name === "Free" ? "/signup" : "/membership"}
-                className={`mt-8 block text-center py-3 rounded-md font-medium transition ${
-                  p.popular
-                    ? "bg-background text-primary hover:opacity-90"
-                    : "bg-primary text-primary-foreground hover:opacity-90"
-                }`}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+          {PLANS.map((p) => {
+            const highlight = p.popular || p.best;
+            return (
+              <div
+                key={p.name}
+                className={[
+                  "relative flex flex-col rounded-xl bg-card border",
+                  highlight ? "border-primary shadow-[0_6px_30px_-12px_rgba(181,84,106,0.35)]" : "border-border",
+                ].join(" ")}
               >
-                {p.name === "Free" ? "Get started" : "Choose plan"}
-              </Link>
-            </div>
-          ))}
+                {p.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="px-3 py-1 text-[10px] uppercase tracking-wider rounded-full bg-primary text-primary-foreground font-semibold">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+                {p.best && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="px-3 py-1 text-[10px] uppercase tracking-wider rounded-full bg-gold text-ink font-semibold">
+                      Best Value
+                    </span>
+                  </div>
+                )}
+
+                <div className="p-6 border-b border-border">
+                  <h3 className="text-xl font-semibold tracking-tight">{p.name}</h3>
+                  <p className="text-xs text-muted-foreground mt-1 min-h-[16px]">{p.tagline}</p>
+                  <div className="mt-5 flex items-baseline gap-1.5">
+                    <span className="text-4xl font-semibold tracking-tight">{p.price}</span>
+                    <span className="text-sm text-muted-foreground">/ {p.duration}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1 min-h-[16px]">
+                    {p.perMonth ? `Effective ${p.perMonth}` : "\u00A0"}
+                  </p>
+                  <Link
+                    to={p.href}
+                    className={[
+                      "mt-5 block text-center py-2.5 rounded-md text-sm font-medium transition-colors",
+                      highlight
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+                    ].join(" ")}
+                  >
+                    {p.cta}
+                  </Link>
+                </div>
+
+                <ul className="p-6 space-y-3 flex-1">
+                  {p.features.map((f) => (
+                    <li
+                      key={f.label}
+                      className={[
+                        "flex items-start gap-2.5 text-sm",
+                        f.included ? "text-foreground" : "text-muted-foreground/60",
+                      ].join(" ")}
+                    >
+                      {f.included ? (
+                        <Check className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                      ) : (
+                        <X className="w-4 h-4 mt-0.5 shrink-0 text-muted-foreground/40" />
+                      )}
+                      <span className={f.included ? "" : "line-through"}>{f.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
 
-        <p className="text-center text-sm text-muted-foreground mt-12">
-          Prices in Indian Rupees (₹). Payments processed securely. GST included where applicable.
+        <p className="text-center text-xs text-muted-foreground mt-10">
+          Prices in Indian Rupees (₹). GST included where applicable. Payments processed securely.
         </p>
       </section>
       <Footer />
