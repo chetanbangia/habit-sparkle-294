@@ -131,7 +131,8 @@
   }
   h1, h2, h3, h4, .font-serif {
     font-family: var(--font-serif);
-    letter-spacing: -0.01em;
+    font-weight: 600;
+    letter-spacing: -0.022em;
   }
   .font-gurmukhi { font-family: var(--font-gurmukhi); }
   .font-sf { font-family: var(--font-sf); letter-spacing: -0.015em; }
