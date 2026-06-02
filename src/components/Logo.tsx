@@ -12,7 +12,7 @@ export function Logo({ className = "", showTagline = false }: LogoProps) {
       <img
         src={logoAsset.url}
         alt="Saanjh — where meaningful relationships begin"
-        className="h-10 w-auto sm:h-12 object-contain group-hover:opacity-90 transition-opacity"
+        className="h-16 sm:h-20 md:h-24 w-auto object-contain group-hover:opacity-90 transition-opacity"
         loading="eager"
       />
       {showTagline && (
