@@ -18,7 +18,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-background/85 border-b border-border/60">
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 h-24 md:h-28 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
         <Logo />
 
         <nav className="hidden md:flex items-center gap-8 text-sm">
