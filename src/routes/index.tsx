@@ -51,7 +51,7 @@ function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
 
           {/* Right-aligned hero copy */}
-          <div className="relative z-10 max-w-7xl mx-auto h-full px-6 sm:px-10 lg:px-16 flex items-center">
+          <div className="relative z-10 max-w-7xl mx-auto h-full px-6 sm:px-10 lg:px-16 flex items-center pb-32 sm:pb-40 lg:pb-48">
             <div className="ml-auto w-full lg:w-[52%]">
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
