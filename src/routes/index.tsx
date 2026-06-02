@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
       },
     ],
     links: [
-      { rel: "preload", as: "image", href: heroImage, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroImage, fetchPriority: "high" },
     ],
   }),
   component: HomePage,
