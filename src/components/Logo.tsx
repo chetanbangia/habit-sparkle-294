@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logoAsset from "@/assets/saanjh-logo.png.asset.json";
+import logoUrl from "@/assets/saanjh-logo.png";
 
 interface LogoProps {
   className?: string;
@@ -10,7 +10,7 @@ export function Logo({ className = "", showTagline = false }: LogoProps) {
   return (
     <Link to="/" className={`inline-flex items-center gap-2 group ${className}`}>
       <img
-        src={logoAsset.url}
+        src={logoUrl}
         alt="Saanjh — where meaningful relationships begin"
         className="h-14 sm:h-16 w-auto object-contain -my-2 group-hover:opacity-90 transition-opacity"
         loading="eager"
