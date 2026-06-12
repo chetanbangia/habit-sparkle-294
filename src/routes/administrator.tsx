@@ -8,7 +8,7 @@ import {
   TrendingUp, Clock, Ban, IndianRupee, Search,
 } from "lucide-react";
 
-export const Route = createFileRoute("/adminaccess")({
+export const Route = createFileRoute("/administrator")({
   head: () => ({ meta: [{ title: "Admin Console · Saanjh" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: AdminAccessPage,
 });
