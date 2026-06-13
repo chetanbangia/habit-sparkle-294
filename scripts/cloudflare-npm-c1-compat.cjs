@@ -3,6 +3,7 @@ const path = require("node:path");
 
 const marker = "lovable-cloudflare-npm-c1-compat-v2";
 const npmExecPath = process.env.npm_execpath;
+const npmBinPath = process.platform === "win32" ? "npm.cmd" : "/bin/npm";
 
 function patchNpmCli() {
   if (!npmExecPath || !fs.existsSync(npmExecPath)) return false;
@@ -22,13 +23,11 @@ function patchNpmCli() {
 }
 
 function createLocalNpmShim() {
-  if (!npmExecPath) return false;
-
   const binDir = path.join(process.cwd(), "node_modules", ".bin");
   fs.mkdirSync(binDir, { recursive: true });
 
   const shimPath = path.join(binDir, "npm");
-  const shim = `#!/usr/bin/env node\nif (process.argv[2] === "c1") {\n  console.log("Compatibility: treating mistyped npm c1 as already satisfied.");\n  process.exit(0);\n}\nawait import(${JSON.stringify(npmExecPath)});\n`;
+  const shim = `#!/usr/bin/env node\nconst { spawnSync } = require("node:child_process");\nif (process.argv[2] === "c1") {\n  console.log("Compatibility: treating mistyped npm c1 as already satisfied.");\n  process.exit(0);\n}\nconst result = spawnSync(${JSON.stringify(npmBinPath)}, process.argv.slice(2), { stdio: "inherit" });\nprocess.exit(result.status ?? 1);\n`;
 
   fs.writeFileSync(shimPath, shim);
   fs.chmodSync(shimPath, 0o755);
