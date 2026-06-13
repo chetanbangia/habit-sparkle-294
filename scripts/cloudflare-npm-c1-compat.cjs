@@ -8,7 +8,12 @@ const npmBinPath = process.platform === "win32" ? "npm.cmd" : "/bin/npm";
 function patchNpmCli() {
   if (!npmExecPath || !fs.existsSync(npmExecPath)) return false;
 
-  const source = fs.readFileSync(npmExecPath, "utf8");
+  // Only patch JS-based npm CLIs. Never touch native binaries (e.g. bun).
+  const buf = fs.readFileSync(npmExecPath);
+  const head = buf.slice(0, 256).toString("utf8");
+  if (!head.startsWith("#!") || !/node/.test(head.split("\n")[0])) return false;
+
+  const source = buf.toString("utf8");
   if (source.includes(marker)) return true;
 
   const shim = `// ${marker}\nif (process.argv[2] === "c1") {\n  console.log("Compatibility: treating mistyped npm c1 as already satisfied.");\n  process.exit(0);\n}\n`;
