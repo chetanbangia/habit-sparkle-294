@@ -499,6 +499,97 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
             </Panel>
           </div>
         )}
+
+        {tab === "paymentreqs" && (
+          <div className="space-y-6">
+            <Panel title="UPI collection settings">
+              <div className="grid md:grid-cols-[220px_1fr] gap-6">
+                <div>
+                  <div className="w-[200px] h-[200px] grid place-items-center rounded-lg border border-border bg-white overflow-hidden">
+                    {qrUrl ? <img src={qrUrl} alt="Current UPI QR code" className="w-full h-full object-contain p-2" />
+                      : <p className="text-xs text-muted-foreground text-center px-4">No QR uploaded</p>}
+                  </div>
+                  <label className="mt-3 block text-center text-xs px-3 py-2 rounded-md border border-border cursor-pointer hover:border-primary/50">
+                    Upload / replace QR
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => uploadQr(e.target.files?.[0] ?? null)} />
+                  </label>
+                </div>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const fd = new FormData(e.currentTarget as HTMLFormElement);
+                    saveSettings({
+                      upi_id: String(fd.get("upi_id") || ""),
+                      payee_name: String(fd.get("payee_name") || ""),
+                      instructions: String(fd.get("instructions") || ""),
+                    });
+                  }}
+                  className="space-y-3"
+                >
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">UPI ID</label>
+                    <input name="upi_id" defaultValue={settings?.upi_id || ""} placeholder="name@okhdfcbank"
+                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Payee name</label>
+                    <input name="payee_name" defaultValue={settings?.payee_name || ""}
+                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Instructions shown to members</label>
+                    <textarea name="instructions" rows={3} defaultValue={settings?.instructions || ""}
+                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+                  </div>
+                  <button className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium">Save settings</button>
+                </form>
+              </div>
+            </Panel>
+
+            <Panel title={`Payment requests (${payReqs.length}) · ${pendingPayReqs.length} pending`}>
+              <div className="space-y-4">
+                {payReqs.length === 0 && <p className="py-8 text-center text-sm text-muted-foreground">No payment requests yet.</p>}
+                {payReqs.map((r) => {
+                  const u = userById(r.user_id);
+                  return (
+                    <div key={r.id} className="flex flex-col sm:flex-row gap-4 p-4 border border-border rounded-lg bg-background">
+                      <a href={proofUrls[r.id]} target="_blank" rel="noreferrer" className="shrink-0">
+                        {proofUrls[r.id]
+                          ? <img src={proofUrls[r.id]} alt="Payment screenshot submitted by member" className="w-40 h-40 object-cover rounded-md border border-border" />
+                          : <div className="w-40 h-40 grid place-items-center rounded-md border border-dashed border-border text-xs text-muted-foreground">No preview</div>}
+                      </a>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{u?.display_name || "Unnamed"}</p>
+                          <span className={`px-2 py-0.5 rounded-full text-xs ${r.status === "approved" ? "bg-emerald-500/10 text-emerald-600" : r.status === "rejected" ? "bg-destructive/10 text-destructive" : "bg-amber-500/10 text-amber-600"}`}>{r.status}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground font-mono mt-0.5">{r.user_id.slice(0, 8)}</p>
+                        <p className="text-sm mt-2">
+                          Plan <strong>{r.plan_code}</strong> · <strong>₹{(r.amount_paise / 100).toLocaleString("en-IN")}</strong>
+                        </p>
+                        {r.reference_no && <p className="text-xs text-muted-foreground mt-1">UTR: {r.reference_no}</p>}
+                        {r.note && <p className="text-xs text-muted-foreground mt-1">Note: {r.note}</p>}
+                        <p className="text-xs text-muted-foreground mt-1">{new Date(r.created_at).toLocaleString()}</p>
+                        {r.admin_note && r.status !== "pending" && <p className="text-xs text-muted-foreground mt-1">Admin: {r.admin_note}</p>}
+
+                        {r.status === "pending" && (
+                          <div className="mt-3 flex gap-2">
+                            <button onClick={() => approvePayment(r)} className="px-3 py-1.5 rounded-md bg-emerald-600 text-white text-sm inline-flex items-center gap-1">
+                              <Check className="w-4 h-4" /> Approve & activate
+                            </button>
+                            <button onClick={() => rejectPayment(r)} className="px-3 py-1.5 rounded-md border border-border text-destructive text-sm inline-flex items-center gap-1">
+                              <X className="w-4 h-4" /> Reject
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Panel>
+          </div>
+        )}
       </main>
     </div>
   );
