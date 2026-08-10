@@ -168,6 +168,86 @@ export type Database = {
           },
         ]
       }
+      payment_requests: {
+        Row: {
+          admin_note: string | null
+          amount_paise: number
+          created_at: string
+          id: string
+          note: string | null
+          plan_code: string
+          reference_no: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          screenshot_path: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          admin_note?: string | null
+          amount_paise: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          plan_code: string
+          reference_no?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          screenshot_path: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          admin_note?: string | null
+          amount_paise?: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          plan_code?: string
+          reference_no?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          screenshot_path?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_requests_plan_code_fkey"
+            columns: ["plan_code"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      payment_settings: {
+        Row: {
+          id: boolean
+          instructions: string | null
+          payee_name: string | null
+          qr_path: string | null
+          updated_at: string
+          upi_id: string | null
+        }
+        Insert: {
+          id?: boolean
+          instructions?: string | null
+          payee_name?: string | null
+          qr_path?: string | null
+          updated_at?: string
+          upi_id?: string | null
+        }
+        Update: {
+          id?: boolean
+          instructions?: string | null
+          payee_name?: string | null
+          qr_path?: string | null
+          updated_at?: string
+          upi_id?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount_paise: number
