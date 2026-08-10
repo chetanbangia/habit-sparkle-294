@@ -121,7 +121,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const loadAll = useCallback(async () => {
     setLoading(true);
     try {
-      const [profilesAll, pendingP, reportsR, interestsI, matchesM, messagesMs, membershipsMb, paymentsP] = await Promise.all([
+      const [profilesAll, pendingP, reportsR, interestsI, matchesM, messagesMs, membershipsMb, paymentsP, payReqsR, plansR, settingsR] = await Promise.all([
         supabase.from("profiles").select("*").order("created_at", { ascending: false }).limit(500),
         supabase.from("profiles").select("*").eq("status", "pending").order("updated_at", { ascending: false }),
         supabase.from("reports").select("*").eq("resolved", false).order("created_at", { ascending: false }),
@@ -130,6 +130,9 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         supabase.from("messages").select("id", { count: "exact", head: true }),
         supabase.from("memberships").select("*").order("created_at", { ascending: false }).limit(100),
         supabase.from("payments").select("*").order("created_at", { ascending: false }).limit(100),
+        supabase.from("payment_requests").select("*").order("created_at", { ascending: false }).limit(200),
+        supabase.from("plans").select("*").order("sort_order"),
+        supabase.from("payment_settings").select("*").maybeSingle(),
       ]);
 
       const all = profilesAll.data || [];
@@ -140,6 +143,26 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
       setRecentMatches(matchesM.data || []);
       setMemberships(membershipsMb.data || []);
       setPayments(paymentsP.data || []);
+      setPlans(plansR.data || []);
+      setSettings(settingsR.data || null);
+
+      const reqs = payReqsR.data || [];
+      setPayReqs(reqs);
+      const urls: Record<string, string> = {};
+      await Promise.all(
+        reqs.slice(0, 60).map(async (r: any) => {
+          const { data: signed } = await supabase.storage.from("payment-proofs").createSignedUrl(r.screenshot_path, 3600);
+          if (signed?.signedUrl) urls[r.id] = signed.signedUrl;
+        }),
+      );
+      setProofUrls(urls);
+
+      if (settingsR.data?.qr_path) {
+        const { data: signedQr } = await supabase.storage.from("payment-proofs").createSignedUrl(settingsR.data.qr_path, 3600);
+        setQrUrl(signedQr?.signedUrl ?? null);
+      } else {
+        setQrUrl(null);
+      }
 
       const interests = interestsI.data || [];
       const successfulPayments = (paymentsP.data || []).filter((p: any) => p.status === "success" || p.status === "paid" || p.status === "completed");
