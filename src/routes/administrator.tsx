@@ -109,7 +109,12 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [memberships, setMemberships] = useState<any[]>([]);
   const [payments, setPayments] = useState<any[]>([]);
-  const [tab, setTab] = useState<"overview" | "users" | "pending" | "reports" | "matches" | "memberships">("overview");
+  const [payReqs, setPayReqs] = useState<any[]>([]);
+  const [proofUrls, setProofUrls] = useState<Record<string, string>>({});
+  const [plans, setPlans] = useState<any[]>([]);
+  const [settings, setSettings] = useState<any>(null);
+  const [qrUrl, setQrUrl] = useState<string | null>(null);
+  const [tab, setTab] = useState<"overview" | "users" | "pending" | "reports" | "matches" | "memberships" | "paymentreqs">("overview");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
