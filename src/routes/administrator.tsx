@@ -302,6 +302,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
             ["reports", `Reports (${reports.length})`],
             ["matches", "Matches"],
             ["memberships", "Memberships"],
+            ["paymentreqs", `Payments (${pendingPayReqs.length})`],
           ] as const).map(([k, label]) => (
             <button key={k} onClick={() => setTab(k as any)}
               className={`px-4 py-3 text-sm whitespace-nowrap border-b-2 transition-colors ${tab === k ? "border-primary text-primary" : "border-transparent text-foreground/60 hover:text-foreground"}`}>
