@@ -204,6 +204,70 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     loadAll();
   };
 
+  const approvePayment = async (req: any) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const plan = plans.find((p: any) => p.code === req.plan_code);
+    const days = plan?.duration_days ?? 30;
+    const expires = new Date(Date.now() + days * 86400000).toISOString();
+    try {
+      const { error: memErr } = await supabase.from("memberships").insert({
+        user_id: req.user_id, plan_code: req.plan_code, expires_at: expires, status: "active",
+      });
+      if (memErr) throw memErr;
+      const { error: payErr } = await supabase.from("payments").insert({
+        user_id: req.user_id, plan_code: req.plan_code, amount_paise: req.amount_paise,
+        provider: "upi_manual", provider_ref: req.reference_no, status: "success",
+      });
+      if (payErr) throw payErr;
+      const { error } = await supabase.from("payment_requests").update({
+        status: "approved", reviewed_at: new Date().toISOString(),
+        reviewed_by: session?.user.id ?? null, admin_note: "Payment verified",
+      }).eq("id", req.id);
+      if (error) throw error;
+      toast.success(`Membership activated until ${new Date(expires).toLocaleDateString()}`);
+      loadAll();
+    } catch (err: any) {
+      toast.error(err.message || "Could not approve payment");
+    }
+  };
+
+  const rejectPayment = async (req: any) => {
+    const reason = window.prompt("Reason for rejection (shown to the member):", "Payment could not be verified");
+    if (reason === null) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    const { error } = await supabase.from("payment_requests").update({
+      status: "rejected", reviewed_at: new Date().toISOString(),
+      reviewed_by: session?.user.id ?? null, admin_note: reason || "Rejected",
+    }).eq("id", req.id);
+    if (error) return toast.error(error.message);
+    toast.success("Payment rejected");
+    loadAll();
+  };
+
+  const uploadQr = async (f: File | null) => {
+    if (!f) return;
+    if (!f.type.startsWith("image/")) return toast.error("Please upload an image");
+    const ext = f.name.split(".").pop()?.toLowerCase() || "png";
+    const path = `qr/upi-${Date.now()}.${ext}`;
+    const { error: upErr } = await supabase.storage.from("payment-proofs").upload(path, f, { contentType: f.type, upsert: true });
+    if (upErr) return toast.error(upErr.message);
+    const { error } = await supabase.from("payment_settings").update({ qr_path: path, updated_at: new Date().toISOString() }).eq("id", true);
+    if (error) return toast.error(error.message);
+    toast.success("QR updated");
+    loadAll();
+  };
+
+  const saveSettings = async (patch: { upi_id?: string; payee_name?: string; instructions?: string }) => {
+    const { error } = await supabase.from("payment_settings").update({ ...patch, updated_at: new Date().toISOString() }).eq("id", true);
+    if (error) return toast.error(error.message);
+    toast.success("Payment settings saved");
+    loadAll();
+  };
+
+  const pendingPayReqs = payReqs.filter((r: any) => r.status === "pending");
+  const userById = (id: string) => users.find((u: any) => u.id === id);
+
+
   const filteredUsers = users.filter((u: any) => {
     if (!search.trim()) return true;
     const q = search.toLowerCase();
