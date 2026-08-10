@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Check, Crown, Sparkles } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Check, Clock, Crown, IndianRupee, QrCode, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { getActiveMembership, formatINR, type ActiveMembership } from "@/lib/membership";
@@ -15,41 +15,82 @@ function MembershipPage() {
   const { user } = useAuth();
   const [plans, setPlans] = useState<any[]>([]);
   const [current, setCurrent] = useState<ActiveMembership | null>(null);
-  const [activating, setActivating] = useState<string | null>(null);
+  const [settings, setSettings] = useState<any>(null);
+  const [qrUrl, setQrUrl] = useState<string | null>(null);
+  const [requests, setRequests] = useState<any[]>([]);
+  const [selected, setSelected] = useState<string>("month");
 
-  useEffect(() => {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [reference, setReference] = useState("");
+  const [note, setNote] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const load = useCallback(async () => {
     if (!user) return;
-    (async () => {
-      const [p, m] = await Promise.all([
-        supabase.from("plans").select("*").eq("active", true).neq("code", "free").order("sort_order"),
-        getActiveMembership(user.id),
-      ]);
-      setPlans(p.data || []);
-      setCurrent(m);
-    })();
+    const [p, m, s, r] = await Promise.all([
+      supabase.from("plans").select("*").eq("active", true).neq("code", "free").order("sort_order"),
+      getActiveMembership(user.id),
+      supabase.from("payment_settings").select("*").maybeSingle(),
+      supabase.from("payment_requests").select("*").order("created_at", { ascending: false }).limit(10),
+    ]);
+    setPlans(p.data || []);
+    setCurrent(m);
+    setSettings(s.data || null);
+    setRequests(r.data || []);
+    if (s.data?.qr_path) {
+      const { data: signed } = await supabase.storage.from("payment-proofs").createSignedUrl(s.data.qr_path, 3600);
+      setQrUrl(signed?.signedUrl ?? null);
+    } else {
+      setQrUrl(null);
+    }
   }, [user]);
 
-  const choose = async (plan: any) => {
-    if (!user) return;
-    setActivating(plan.code);
+  useEffect(() => { load(); }, [load]);
+
+  const activePlan = useMemo(() => plans.find((p) => p.code === selected) || plans[0], [plans, selected]);
+  const pendingReq = requests.find((r) => r.status === "pending");
+
+  const onPick = (f: File | null) => {
+    if (!f) return;
+    if (!f.type.startsWith("image/")) return toast.error("Please upload an image file");
+    if (f.size > 5 * 1024 * 1024) return toast.error("Image must be under 5 MB");
+    setFile(f);
+    setPreview(URL.createObjectURL(f));
+  };
+
+  const submit = async () => {
+    if (!user || !activePlan) return;
+    if (!file) return toast.error("Payment screenshot is required");
+    setSubmitting(true);
     try {
-      const expires = new Date(Date.now() + plan.duration_days * 86400000).toISOString();
-      const { error: payErr } = await supabase.from("payments").insert({
-        user_id: user.id, plan_code: plan.code, amount_paise: plan.price_paise,
-        provider: "manual", status: "demo_completed",
+      const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+      const path = `${user.id}/${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("payment-proofs")
+        .upload(path, file, { upsert: false, contentType: file.type });
+      if (upErr) throw upErr;
+
+      const { error } = await supabase.from("payment_requests").insert({
+        user_id: user.id,
+        plan_code: activePlan.code,
+        amount_paise: activePlan.price_paise,
+        screenshot_path: path,
+        reference_no: reference.trim() || null,
+        note: note.trim() || null,
+        status: "pending",
       });
-      if (payErr) throw payErr;
-      const { error: memErr } = await supabase.from("memberships").insert({
-        user_id: user.id, plan_code: plan.code, expires_at: expires, status: "active",
-      });
-      if (memErr) throw memErr;
-      toast.success(`${plan.name} activated! Valid until ${new Date(expires).toLocaleDateString()}.`);
-      const m = await getActiveMembership(user.id);
-      setCurrent(m);
+      if (error) throw error;
+
+      toast.success("Payment submitted — membership activates after admin verification.");
+      setFile(null); setPreview(null); setReference(""); setNote("");
+      if (fileRef.current) fileRef.current.value = "";
+      load();
     } catch (err: any) {
-      toast.error(err.message || "Could not activate plan");
+      toast.error(err.message || "Could not submit payment");
     } finally {
-      setActivating(null);
+      setSubmitting(false);
     }
   };
 
@@ -70,39 +111,177 @@ function MembershipPage() {
         </div>
       )}
 
-      <div className="mt-4 p-4 rounded-md bg-gold/10 border border-gold/30 text-sm text-foreground/80">
-        <strong>Demo mode:</strong> Razorpay/Stripe is not yet wired. Clicking a plan activates it instantly for testing.
-        Real payments coming soon — your plan, your data, and pricing are all live.
-      </div>
+      {pendingReq && (
+        <div className="mt-4 flex items-start gap-3 rounded-lg border border-gold/40 bg-gold/10 p-4">
+          <Clock className="w-5 h-5 text-gold mt-0.5" />
+          <div>
+            <p className="text-sm font-medium">Payment under verification</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {pendingReq.plan_code} · {formatINR(pendingReq.amount_paise)} submitted on {new Date(pendingReq.created_at).toLocaleString()}.
+            </p>
+          </div>
+        </div>
+      )}
 
-      <div className="grid md:grid-cols-3 gap-5 mt-8">
+      {/* Step 1 — plan */}
+      <h2 className="font-serif text-2xl mt-10">1 · Choose your plan</h2>
+      <div className="grid md:grid-cols-3 gap-4 mt-4">
         {plans.map((p) => {
+          const isSelected = activePlan?.code === p.code;
           const isCurrent = current?.planCode === p.code;
           return (
-            <div key={p.code} className={`rounded-lg p-6 ${p.code === "month" ? "bg-primary text-primary-foreground" : "bg-card border border-border"}`}>
-              {p.code === "month" && (
-                <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-gold text-ink mb-2">
-                  <Sparkles className="w-3 h-3" /> Most popular
-                </span>
-              )}
-              <h3 className="font-serif text-2xl">{p.name}</h3>
+            <button
+              key={p.code}
+              onClick={() => setSelected(p.code)}
+              className={`text-left rounded-lg p-6 border transition-colors ${isSelected ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/40"}`}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="font-serif text-2xl">{p.name}</h3>
+                {isSelected && <Check className="w-4 h-4 text-primary" />}
+              </div>
               <p className="font-serif text-4xl mt-3">{formatINR(p.price_paise)}</p>
-              <p className={`text-xs ${p.code === "month" ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{p.duration_days} days</p>
-              <ul className={`mt-5 space-y-2 text-sm ${p.code === "month" ? "text-primary-foreground/90" : "text-muted-foreground"}`}>
-                {(p.features?.chat) && <li className="flex gap-2"><Check className="w-4 h-4" /> Chat with matches</li>}
-                {(p.features?.contact) && <li className="flex gap-2"><Check className="w-4 h-4" /> Contact access</li>}
-                {(p.features?.full_photos) && <li className="flex gap-2"><Check className="w-4 h-4" /> Full photos</li>}
-                {(p.features?.interests_per_day === -1) && <li className="flex gap-2"><Check className="w-4 h-4" /> Unlimited interests</li>}
-                {(p.features?.priority) && <li className="flex gap-2"><Check className="w-4 h-4" /> Priority visibility</li>}
+              <p className="text-xs text-muted-foreground">{p.duration_days} days{isCurrent ? " · current plan" : ""}</p>
+              <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
+                {p.features?.chat && <li className="flex gap-2"><Check className="w-4 h-4" /> Chat with matches</li>}
+                {p.features?.contact && <li className="flex gap-2"><Check className="w-4 h-4" /> Contact access</li>}
+                {p.features?.full_photos && <li className="flex gap-2"><Check className="w-4 h-4" /> Full photos</li>}
+                {p.features?.interests_per_day === -1 && <li className="flex gap-2"><Check className="w-4 h-4" /> Unlimited interests</li>}
+                {p.features?.priority && <li className="flex gap-2"><Check className="w-4 h-4" /> Priority visibility</li>}
               </ul>
-              <button onClick={() => choose(p)} disabled={activating === p.code || isCurrent}
-                className={`mt-6 w-full py-2.5 rounded-md font-medium transition disabled:opacity-50 ${p.code === "month" ? "bg-background text-primary hover:opacity-90" : "bg-primary text-primary-foreground hover:opacity-90"}`}>
-                {isCurrent ? "Current plan" : activating === p.code ? "Activating..." : "Choose plan"}
-              </button>
-            </div>
+            </button>
           );
         })}
       </div>
+
+      <div className="grid md:grid-cols-2 gap-6 mt-10">
+        {/* Step 2 — pay */}
+        <section className="rounded-lg border border-border bg-card p-6">
+          <h2 className="font-serif text-2xl">
+            2 · Pay {activePlan ? formatINR(activePlan.price_paise) : "—"}
+          </h2>
+          <div className="mt-4 grid place-items-center">
+            {qrUrl ? (
+              <img
+                src={qrUrl}
+                alt="UPI payment QR code for Saanjh membership"
+                className="w-56 h-56 object-contain rounded-lg border border-border bg-white p-2"
+              />
+            ) : (
+              <div className="w-56 h-56 grid place-items-center rounded-lg border border-dashed border-border text-center px-4">
+                <div>
+                  <QrCode className="w-8 h-8 mx-auto text-muted-foreground" />
+                  <p className="text-xs text-muted-foreground mt-2">QR is being set up. Please use the UPI ID or contact support.</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {settings?.upi_id && (
+            <div className="mt-4 rounded-md bg-secondary/50 px-4 py-3">
+              <p className="text-[11px] uppercase tracking-wider text-muted-foreground">UPI ID</p>
+              <div className="flex items-center justify-between gap-3">
+                <p className="font-medium">{settings.upi_id}</p>
+                <button
+                  onClick={() => { navigator.clipboard.writeText(settings.upi_id); toast.success("UPI ID copied"); }}
+                  className="text-xs px-2 py-1 rounded-md border border-border"
+                >
+                  Copy
+                </button>
+              </div>
+              {settings.payee_name && <p className="text-xs text-muted-foreground mt-1">{settings.payee_name}</p>}
+            </div>
+          )}
+
+          {settings?.instructions && (
+            <p className="text-xs text-muted-foreground mt-4 leading-relaxed">{settings.instructions}</p>
+          )}
+        </section>
+
+        {/* Step 3 — upload */}
+        <section className="rounded-lg border border-border bg-card p-6">
+          <h2 className="font-serif text-2xl">3 · Upload payment screenshot</h2>
+
+          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => onPick(e.target.files?.[0] ?? null)} />
+
+          {preview ? (
+            <div className="mt-4 relative">
+              <img src={preview} alt="Payment screenshot preview" className="w-full max-h-72 object-contain rounded-md border border-border" />
+              <button
+                onClick={() => { setFile(null); setPreview(null); if (fileRef.current) fileRef.current.value = ""; }}
+                className="absolute top-2 right-2 p-1.5 rounded-full bg-background/90 border border-border"
+                aria-label="Remove screenshot"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => fileRef.current?.click()}
+              className="mt-4 w-full rounded-md border border-dashed border-border py-10 grid place-items-center hover:border-primary/50 transition-colors"
+            >
+              <div className="text-center">
+                <Upload className="w-6 h-6 mx-auto text-muted-foreground" />
+                <p className="text-sm mt-2">Tap to upload screenshot</p>
+                <p className="text-xs text-muted-foreground mt-0.5">JPG / PNG · max 5 MB</p>
+              </div>
+            </button>
+          )}
+
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-5 mb-1">UPI reference / UTR (optional)</label>
+          <input
+            value={reference}
+            onChange={(e) => setReference(e.target.value)}
+            placeholder="e.g. 4183XXXXXX21"
+            className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-1">Note for admin (optional)</label>
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            rows={2}
+            className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+
+          <button
+            onClick={submit}
+            disabled={submitting || !file}
+            className="mt-5 w-full rounded-md bg-primary text-primary-foreground py-2.5 text-sm font-medium hover:opacity-90 disabled:opacity-50 inline-flex items-center justify-center gap-2"
+          >
+            <IndianRupee className="w-4 h-4" />
+            {submitting ? "Submitting…" : "Submit payment for verification"}
+          </button>
+        </section>
+      </div>
+
+      {requests.length > 0 && (
+        <section className="mt-12">
+          <h2 className="font-serif text-2xl">Your payment history</h2>
+          <ul className="mt-3 divide-y divide-border rounded-lg border border-border bg-card px-5">
+            {requests.map((r) => (
+              <li key={r.id} className="py-3 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-medium">{r.plan_code} · {formatINR(r.amount_paise)}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(r.created_at).toLocaleString()}{r.admin_note ? ` · ${r.admin_note}` : ""}
+                  </p>
+                </div>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-xs ${
+                    r.status === "approved"
+                      ? "bg-emerald-500/10 text-emerald-600"
+                      : r.status === "rejected"
+                        ? "bg-destructive/10 text-destructive"
+                        : "bg-gold/15 text-gold"
+                  }`}
+                >
+                  {r.status}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }

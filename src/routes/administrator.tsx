@@ -109,14 +109,19 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [memberships, setMemberships] = useState<any[]>([]);
   const [payments, setPayments] = useState<any[]>([]);
-  const [tab, setTab] = useState<"overview" | "users" | "pending" | "reports" | "matches" | "memberships">("overview");
+  const [payReqs, setPayReqs] = useState<any[]>([]);
+  const [proofUrls, setProofUrls] = useState<Record<string, string>>({});
+  const [plans, setPlans] = useState<any[]>([]);
+  const [settings, setSettings] = useState<any>(null);
+  const [qrUrl, setQrUrl] = useState<string | null>(null);
+  const [tab, setTab] = useState<"overview" | "users" | "pending" | "reports" | "matches" | "memberships" | "paymentreqs">("overview");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
     setLoading(true);
     try {
-      const [profilesAll, pendingP, reportsR, interestsI, matchesM, messagesMs, membershipsMb, paymentsP] = await Promise.all([
+      const [profilesAll, pendingP, reportsR, interestsI, matchesM, messagesMs, membershipsMb, paymentsP, payReqsR, plansR, settingsR] = await Promise.all([
         supabase.from("profiles").select("*").order("created_at", { ascending: false }).limit(500),
         supabase.from("profiles").select("*").eq("status", "pending").order("updated_at", { ascending: false }),
         supabase.from("reports").select("*").eq("resolved", false).order("created_at", { ascending: false }),
@@ -125,6 +130,9 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         supabase.from("messages").select("id", { count: "exact", head: true }),
         supabase.from("memberships").select("*").order("created_at", { ascending: false }).limit(100),
         supabase.from("payments").select("*").order("created_at", { ascending: false }).limit(100),
+        supabase.from("payment_requests").select("*").order("created_at", { ascending: false }).limit(200),
+        supabase.from("plans").select("*").order("sort_order"),
+        supabase.from("payment_settings").select("*").maybeSingle(),
       ]);
 
       const all = profilesAll.data || [];
@@ -135,6 +143,26 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
       setRecentMatches(matchesM.data || []);
       setMemberships(membershipsMb.data || []);
       setPayments(paymentsP.data || []);
+      setPlans(plansR.data || []);
+      setSettings(settingsR.data || null);
+
+      const reqs = payReqsR.data || [];
+      setPayReqs(reqs);
+      const urls: Record<string, string> = {};
+      await Promise.all(
+        reqs.slice(0, 60).map(async (r: any) => {
+          const { data: signed } = await supabase.storage.from("payment-proofs").createSignedUrl(r.screenshot_path, 3600);
+          if (signed?.signedUrl) urls[r.id] = signed.signedUrl;
+        }),
+      );
+      setProofUrls(urls);
+
+      if (settingsR.data?.qr_path) {
+        const { data: signedQr } = await supabase.storage.from("payment-proofs").createSignedUrl(settingsR.data.qr_path, 3600);
+        setQrUrl(signedQr?.signedUrl ?? null);
+      } else {
+        setQrUrl(null);
+      }
 
       const interests = interestsI.data || [];
       const successfulPayments = (paymentsP.data || []).filter((p: any) => p.status === "success" || p.status === "paid" || p.status === "completed");
@@ -176,6 +204,70 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     loadAll();
   };
 
+  const approvePayment = async (req: any) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const plan = plans.find((p: any) => p.code === req.plan_code);
+    const days = plan?.duration_days ?? 30;
+    const expires = new Date(Date.now() + days * 86400000).toISOString();
+    try {
+      const { error: memErr } = await supabase.from("memberships").insert({
+        user_id: req.user_id, plan_code: req.plan_code, expires_at: expires, status: "active",
+      });
+      if (memErr) throw memErr;
+      const { error: payErr } = await supabase.from("payments").insert({
+        user_id: req.user_id, plan_code: req.plan_code, amount_paise: req.amount_paise,
+        provider: "upi_manual", provider_ref: req.reference_no, status: "success",
+      });
+      if (payErr) throw payErr;
+      const { error } = await supabase.from("payment_requests").update({
+        status: "approved", reviewed_at: new Date().toISOString(),
+        reviewed_by: session?.user.id ?? null, admin_note: "Payment verified",
+      }).eq("id", req.id);
+      if (error) throw error;
+      toast.success(`Membership activated until ${new Date(expires).toLocaleDateString()}`);
+      loadAll();
+    } catch (err: any) {
+      toast.error(err.message || "Could not approve payment");
+    }
+  };
+
+  const rejectPayment = async (req: any) => {
+    const reason = window.prompt("Reason for rejection (shown to the member):", "Payment could not be verified");
+    if (reason === null) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    const { error } = await supabase.from("payment_requests").update({
+      status: "rejected", reviewed_at: new Date().toISOString(),
+      reviewed_by: session?.user.id ?? null, admin_note: reason || "Rejected",
+    }).eq("id", req.id);
+    if (error) return toast.error(error.message);
+    toast.success("Payment rejected");
+    loadAll();
+  };
+
+  const uploadQr = async (f: File | null) => {
+    if (!f) return;
+    if (!f.type.startsWith("image/")) return toast.error("Please upload an image");
+    const ext = f.name.split(".").pop()?.toLowerCase() || "png";
+    const path = `qr/upi-${Date.now()}.${ext}`;
+    const { error: upErr } = await supabase.storage.from("payment-proofs").upload(path, f, { contentType: f.type, upsert: true });
+    if (upErr) return toast.error(upErr.message);
+    const { error } = await supabase.from("payment_settings").update({ qr_path: path, updated_at: new Date().toISOString() }).eq("id", true);
+    if (error) return toast.error(error.message);
+    toast.success("QR updated");
+    loadAll();
+  };
+
+  const saveSettings = async (patch: { upi_id?: string; payee_name?: string; instructions?: string }) => {
+    const { error } = await supabase.from("payment_settings").update({ ...patch, updated_at: new Date().toISOString() }).eq("id", true);
+    if (error) return toast.error(error.message);
+    toast.success("Payment settings saved");
+    loadAll();
+  };
+
+  const pendingPayReqs = payReqs.filter((r: any) => r.status === "pending");
+  const userById = (id: string) => users.find((u: any) => u.id === id);
+
+
   const filteredUsers = users.filter((u: any) => {
     if (!search.trim()) return true;
     const q = search.toLowerCase();
@@ -210,6 +302,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
             ["reports", `Reports (${reports.length})`],
             ["matches", "Matches"],
             ["memberships", "Memberships"],
+            ["paymentreqs", `Payments (${pendingPayReqs.length})`],
           ] as const).map(([k, label]) => (
             <button key={k} onClick={() => setTab(k as any)}
               className={`px-4 py-3 text-sm whitespace-nowrap border-b-2 transition-colors ${tab === k ? "border-primary text-primary" : "border-transparent text-foreground/60 hover:text-foreground"}`}>
@@ -403,6 +496,97 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                 ))}
                 {payments.length === 0 && <li className="py-6 text-center text-sm text-muted-foreground">None yet.</li>}
               </ul>
+            </Panel>
+          </div>
+        )}
+
+        {tab === "paymentreqs" && (
+          <div className="space-y-6">
+            <Panel title="UPI collection settings">
+              <div className="grid md:grid-cols-[220px_1fr] gap-6">
+                <div>
+                  <div className="w-[200px] h-[200px] grid place-items-center rounded-lg border border-border bg-white overflow-hidden">
+                    {qrUrl ? <img src={qrUrl} alt="Current UPI QR code" className="w-full h-full object-contain p-2" />
+                      : <p className="text-xs text-muted-foreground text-center px-4">No QR uploaded</p>}
+                  </div>
+                  <label className="mt-3 block text-center text-xs px-3 py-2 rounded-md border border-border cursor-pointer hover:border-primary/50">
+                    Upload / replace QR
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => uploadQr(e.target.files?.[0] ?? null)} />
+                  </label>
+                </div>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const fd = new FormData(e.currentTarget as HTMLFormElement);
+                    saveSettings({
+                      upi_id: String(fd.get("upi_id") || ""),
+                      payee_name: String(fd.get("payee_name") || ""),
+                      instructions: String(fd.get("instructions") || ""),
+                    });
+                  }}
+                  className="space-y-3"
+                >
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">UPI ID</label>
+                    <input name="upi_id" defaultValue={settings?.upi_id || ""} placeholder="name@okhdfcbank"
+                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Payee name</label>
+                    <input name="payee_name" defaultValue={settings?.payee_name || ""}
+                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Instructions shown to members</label>
+                    <textarea name="instructions" rows={3} defaultValue={settings?.instructions || ""}
+                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+                  </div>
+                  <button className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium">Save settings</button>
+                </form>
+              </div>
+            </Panel>
+
+            <Panel title={`Payment requests (${payReqs.length}) · ${pendingPayReqs.length} pending`}>
+              <div className="space-y-4">
+                {payReqs.length === 0 && <p className="py-8 text-center text-sm text-muted-foreground">No payment requests yet.</p>}
+                {payReqs.map((r) => {
+                  const u = userById(r.user_id);
+                  return (
+                    <div key={r.id} className="flex flex-col sm:flex-row gap-4 p-4 border border-border rounded-lg bg-background">
+                      <a href={proofUrls[r.id]} target="_blank" rel="noreferrer" className="shrink-0">
+                        {proofUrls[r.id]
+                          ? <img src={proofUrls[r.id]} alt="Payment screenshot submitted by member" className="w-40 h-40 object-cover rounded-md border border-border" />
+                          : <div className="w-40 h-40 grid place-items-center rounded-md border border-dashed border-border text-xs text-muted-foreground">No preview</div>}
+                      </a>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{u?.display_name || "Unnamed"}</p>
+                          <span className={`px-2 py-0.5 rounded-full text-xs ${r.status === "approved" ? "bg-emerald-500/10 text-emerald-600" : r.status === "rejected" ? "bg-destructive/10 text-destructive" : "bg-amber-500/10 text-amber-600"}`}>{r.status}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground font-mono mt-0.5">{r.user_id.slice(0, 8)}</p>
+                        <p className="text-sm mt-2">
+                          Plan <strong>{r.plan_code}</strong> · <strong>₹{(r.amount_paise / 100).toLocaleString("en-IN")}</strong>
+                        </p>
+                        {r.reference_no && <p className="text-xs text-muted-foreground mt-1">UTR: {r.reference_no}</p>}
+                        {r.note && <p className="text-xs text-muted-foreground mt-1">Note: {r.note}</p>}
+                        <p className="text-xs text-muted-foreground mt-1">{new Date(r.created_at).toLocaleString()}</p>
+                        {r.admin_note && r.status !== "pending" && <p className="text-xs text-muted-foreground mt-1">Admin: {r.admin_note}</p>}
+
+                        {r.status === "pending" && (
+                          <div className="mt-3 flex gap-2">
+                            <button onClick={() => approvePayment(r)} className="px-3 py-1.5 rounded-md bg-emerald-600 text-white text-sm inline-flex items-center gap-1">
+                              <Check className="w-4 h-4" /> Approve & activate
+                            </button>
+                            <button onClick={() => rejectPayment(r)} className="px-3 py-1.5 rounded-md border border-border text-destructive text-sm inline-flex items-center gap-1">
+                              <X className="w-4 h-4" /> Reject
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </Panel>
           </div>
         )}
